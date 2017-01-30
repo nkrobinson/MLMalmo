@@ -90,4 +90,4 @@ ENV/
 .ropeproject
 
 # Malmo Specific Files
-chat_reward.tgz
+chat_reward.*
