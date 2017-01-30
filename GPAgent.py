@@ -53,11 +53,15 @@ toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.ex
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 def evalMalmoAgent(individual):
+	print "Evaluating individual"
 	# Transform the tree expression to functionnal Python code
 	routine = gp.compile(individual, pset)
 	# Run the generated routine
 	mr.setAgentFun(routine)
-	return mr.runAgent()
+	reward = mr.runAgent()
+	while not mr.isFinished():
+		print "not finished",
+	return reward
 
 toolbox.register("evaluate", evalMalmoAgent)
 toolbox.register("select", tools.selTournament, tournsize=7)

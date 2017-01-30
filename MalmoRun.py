@@ -31,11 +31,16 @@ class MalmoRun(object):
 
     def wrapperFun(self):
         world_state = self.agent_host.getWorldState()
-        while world_state.is_mission_running:
-            self.agentFun()
+        #while world_state.is_mission_running:
+        self.agentFun()
+        end_reward = 0
         for reward in world_state.rewards:
             end_reward += reward.getValue()
         return end_reward
+
+    def isFinished(self):
+        world_state = self.agent_host.getWorldState()
+        return world_state.is_mission_running
 
     def runAgent(self):
         #Check for agent and server information
