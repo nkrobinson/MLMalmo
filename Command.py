@@ -15,8 +15,8 @@ class Command(object):
 	def moveBackward(self):
 		self.agent_host.sendCommand( "move -1" )
 
-	def turnLeft(self):
-		self.agent_host.sendCommand( "turn 1" )
-
 	def turnRight(self):
-		self.agent_host.sendCommand( "turn -1" )
+		self.agent_host.sendCommand( "turn 0.5" )
+
+	def turnLeft(self):
+		self.agent_host.sendCommand( "turn -0.5" )

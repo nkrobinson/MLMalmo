@@ -27,7 +27,7 @@
 			<AddQuitProducer description="finished maze"/>
 			<AddNavigationObservations/>
 		</MazeDecorator>
-		<ServerQuitFromTimeUp timeLimitMs="45000"/>
+		<ServerQuitFromTimeUp timeLimitMs="3000"/>
 		<ServerQuitWhenAnyAgentFinishes />
 	</ServerHandlers>
 </ServerSection>
@@ -38,11 +38,14 @@
 		  <Placement x="-204" y="81" z="217"/>
 	  </AgentStart>
 	  <AgentHandlers>
-		  <ContinuousMovementCommands turnSpeedDegs="840">
-			  <ModifierList type="deny-list"> <!-- Example deny-list: prevent agent from strafing -->
-				  <command>strafe</command>
-			  </ModifierList>
-		  </ContinuousMovementCommands>
+          <RewardForTouchingBlockType>
+            <Block reward="100.0" type="redstone_block" behaviour="onceOnly"/>
+            <Block reward="5.0" type="stone" variant="smooth_granite andesite smooth_diorite diorite"/>
+          </RewardForTouchingBlockType>
+          <RewardForSendingCommand reward="-1.0" /> 
+          <AgentQuitFromTouchingBlockType>
+            <Block type="redstone_block" description="found_goal" />
+          </AgentQuitFromTouchingBlockType>
 	  </AgentHandlers>
   </AgentSection>
 </Mission>

@@ -33,7 +33,7 @@ mr = MalmoRun()
 
 pset = gp.PrimitiveSet("MAIN", 0)
 pset.addPrimitive(prog2, 2)
-pset.addPrimitive(prog3, 3)
+#pset.addPrimitive(prog3, 3)
 
 pset.addTerminal(mr.c.moveForward)
 pset.addTerminal(mr.c.moveBackward)
@@ -57,11 +57,16 @@ def evalMalmoAgent(individual):
 	# Transform the tree expression to functionnal Python code
 	routine = gp.compile(individual, pset)
 	# Run the generated routine
+	#routine = mr.c.turnLeft
 	mr.setAgentFun(routine)
 	reward = mr.runAgent()
 	while not mr.isFinished():
 		print "not finished",
-	return reward
+	print "Reward: ",
+	print reward
+	print "Individual: ",
+	print individual
+	return (reward,)
 
 toolbox.register("evaluate", evalMalmoAgent)
 toolbox.register("select", tools.selTournament, tournsize=7)
@@ -76,7 +81,7 @@ def main():
 		xml = f.read()
 		mr.setXML(xml)
 
-	pop = toolbox.population(n=300)
+	pop = toolbox.population(n=5)
 	hof = tools.HallOfFame(1)
 	stats = tools.Statistics(lambda ind: ind.fitness.values)
 	stats.register("avg", numpy.mean)
