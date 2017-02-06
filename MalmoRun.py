@@ -5,7 +5,7 @@ by Nicholas Robinson
 Used as a class to run the Malmo system with given parameters. To be used for machine learning.
 '''
 
-from Command import Command
+from Commands import Commands
 
 import MalmoPython
 import os
@@ -31,16 +31,15 @@ class MalmoRun(object):
 
     def wrapperFun(self):
         world_state = self.agent_host.getWorldState()
-        """    while world_state.is_mission_running:""" #Broken. Adding will break commands
-        self.agentFun()
-        end_reward = 0
+        while world_state.is_mission_running:
+            self.agentFun()
+            world_state = self.agent_host.getWorldState()
+        self.end_reward = 0
         for reward in world_state.rewards:
-            end_reward += reward.getValue()
-        return end_reward
+            self.end_reward += reward.getValue()
 
-    def isFinished(self):
-        world_state = self.agent_host.getWorldState()
-        return world_state.is_mission_running
+    def getReward(self):
+        return self.end_reward
 
     def runAgent(self):
         #Check for agent and server information
@@ -91,10 +90,9 @@ class MalmoRun(object):
         print
         print "Mission running ",
 
-        reward = self.wrapperFun()
+        self.wrapperFun()
+        #self.agentFun()
 
         print
         print "Mission ended"
         # Mission has ended.
-
-        return reward

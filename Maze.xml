@@ -14,8 +14,8 @@
 		<MazeDecorator>
 			<SizeAndPosition length="60" width="60" yOrigin="225" zOrigin="0" height="180"/>
 			<GapProbability variance="0.4">0.5</GapProbability>
-			<Seed>random</Seed>
-			<MaterialSeed>random</MaterialSeed>
+			<Seed>123454321</Seed>
+			<MaterialSeed>123454321</MaterialSeed>
 			<AllowDiagonalMovement>false</AllowDiagonalMovement>
 			<StartBlock fixedToEdge="true" type="emerald_block" height="1"/>
 			<EndBlock fixedToEdge="true" type="redstone_block" height="12"/>
@@ -27,18 +27,18 @@
 			<AddQuitProducer description="finished maze"/>
 			<AddNavigationObservations/>
 		</MazeDecorator>
-		<ServerQuitFromTimeUp timeLimitMs="3000"/>
+		<ServerQuitFromTimeUp timeLimitMs="5000"/>
 		<ServerQuitWhenAnyAgentFinishes />
 	</ServerHandlers>
 </ServerSection>
 
 <AgentSection mode="Survival">
-	<Name>Indiana Jones</Name>
+	<Name>Maze Runner</Name>
 	<AgentStart>
-		<Placement x="-204" y="81" z="217"/>
+		<Placement x="-204" y="81" z="217" yaw="0" pitch="0"/>
 	</AgentStart>
 	 <AgentHandlers>
-        <ContinuousMovementCommands turnSpeedDegs="1000"/>
+        <ContinuousMovementCommands turnSpeedDegs="480"/>
         <ObservationFromGrid>
             <Grid name="AgentGrid">
                 <min x="1" y="0" z="1"/>

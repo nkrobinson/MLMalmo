@@ -1,6 +1,6 @@
 
 from MalmoRun import MalmoRun
-from Command import Command
+from Commands import Commands
 
 from functools import partial
 from deap import algorithms
@@ -28,7 +28,6 @@ def prog2(out1, out2):
 def prog3(out1, out2, out3):
 	return partial(progn,out1,out2,out3)
 
-
 mr = MalmoRun()
 
 pset = gp.PrimitiveSet("MAIN", 0)
@@ -53,18 +52,17 @@ toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.ex
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 def evalMalmoAgent(individual):
-	print "Evaluating individual"
-	time.sleep(5)
 	# Transform the tree expression to functionnal Python code
 	routine = gp.compile(individual, pset)
 	print "Individual: ",
 	print individual
 	# Run the generated routine
 	mr.setAgentFun(routine)
-	reward = mr.runAgent()
-	print "Reward: ",
+	#world_state = mr.agent_host.getWorldState()
+	mr.runAgent()
+	reward = mr.getReward()
+	print "\tReward: ",
 	print reward
-	time.sleep(5)
 	return (reward,)
 
 toolbox.register("evaluate", evalMalmoAgent)
@@ -89,6 +87,9 @@ def main():
 	stats.register("max", numpy.max)
 
 	algorithms.eaSimple(pop, toolbox, 0.5, 0.2, 40, stats, halloffame=hof)
+
+	print "Hall Of Fame: ",
+	print hof
 
 	return pop, hof, stats
 
