@@ -31,7 +31,7 @@ class MalmoRun(object):
 
     def wrapperFun(self):
         world_state = self.agent_host.getWorldState()
-        #while world_state.is_mission_running:
+        """    while world_state.is_mission_running:""" #Broken. Adding will break commands
         self.agentFun()
         end_reward = 0
         for reward in world_state.rewards:

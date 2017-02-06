@@ -1,0 +1,5 @@
+GP is not sequential.
+
+GP does not execute every command
+
+Agent's reward calculated at start. While loop broken.

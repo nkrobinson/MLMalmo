@@ -57,11 +57,11 @@ def evalMalmoAgent(individual):
 	# Transform the tree expression to functionnal Python code
 	routine = gp.compile(individual, pset)
 	# Run the generated routine
-	#routine = mr.c.turnLeft
 	mr.setAgentFun(routine)
 	reward = mr.runAgent()
 	while not mr.isFinished():
-		print "not finished",
+		print "not finished"
+		time.sleep(5)
 	print "Reward: ",
 	print reward
 	print "Individual: ",
