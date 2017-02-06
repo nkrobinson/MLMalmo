@@ -38,7 +38,7 @@
 		<Placement x="-204" y="81" z="217"/>
 	</AgentStart>
 	 <AgentHandlers>
-        <ContinuousMovementCommands/>
+        <ContinuousMovementCommands turnSpeedDegs="1000"/>
         <ObservationFromGrid>
             <Grid name="AgentGrid">
                 <min x="1" y="0" z="1"/>
@@ -46,7 +46,8 @@
             </Grid>
         </ObservationFromGrid>
         <RewardForTouchingBlockType>
-            <Block reward="100.0" type="redstone_block" behaviour="onceOnly"/>
+            <Block reward="1000.0" type="redstone_block" behaviour="onceOnly"/>
+			<Block reward="10.0" type="beacon sea_lantern glowstone" behaviour="oncePerBlock"/>
         </RewardForTouchingBlockType>
         <RewardForSendingCommand reward="-1.0" />
         <AgentQuitFromTouchingBlockType>
