@@ -32,12 +32,16 @@ mr = MalmoRun()
 
 pset = gp.PrimitiveSet("MAIN", 0)
 pset.addPrimitive(prog2, 2)
-#pset.addPrimitive(prog3, 3)
+pset.addPrimitive(prog3, 3)
 
 pset.addTerminal(mr.c.moveForward)
 pset.addTerminal(mr.c.moveBackward)
-pset.addTerminal(mr.c.turnLeft)
+pset.addTerminal(mr.c.moveRight)
+pset.addTerminal(mr.c.moveLeft)
 pset.addTerminal(mr.c.turnRight)
+pset.addTerminal(mr.c.turnLeft)
+pset.addTerminal(mr.c.startJump)
+pset.addTerminal(mr.c.stopJump)
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)

@@ -21,7 +21,7 @@ class MalmoRun(object):
         self.agent_host = MalmoPython.AgentHost()
         self.mission_xml = None
         self.agentFun = None
-        self.c = Command(self.agent_host)
+        self.c = Commands(self.agent_host)
 
     def setXML(self, xml):
         self.mission_xml = xml

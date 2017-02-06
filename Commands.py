@@ -19,6 +19,16 @@ class Commands(object):
 		time.sleep(0.5)
 		self.agent_host.sendCommand( "move 0" )
 
+	def moveRight(self):
+		self.agent_host.sendCommand( "strafe 1" )
+		time.sleep(0.5)
+		self.agent_host.sendCommand( "strafe 0" )
+
+	def moveLeft(self):
+		self.agent_host.sendCommand( "strafe -1" )
+		time.sleep(0.5)
+		self.agent_host.sendCommand( "strafe 0" )
+
 	def turnRight(self):
 		self.agent_host.sendCommand( "turn 1" )
 		time.sleep(0.5)
@@ -28,3 +38,9 @@ class Commands(object):
 		self.agent_host.sendCommand( "turn -1" )
 		time.sleep(0.5)
 		self.agent_host.sendCommand( "turn 0" )
+
+	def startJump(self):
+		self.agent_host.sendCommand( "jump 1" )
+		
+	def stopJump(self):
+		self.agent_host.sendCommand( "jump 0" )
