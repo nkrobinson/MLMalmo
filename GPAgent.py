@@ -58,7 +58,6 @@ def evalMalmoAgent(individual):
 	print individual
 	# Run the generated routine
 	mr.setAgentFun(routine)
-	#world_state = mr.agent_host.getWorldState()
 	mr.runAgent()
 	reward = mr.getReward()
 	print "\tReward: ",

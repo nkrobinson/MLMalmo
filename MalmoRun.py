@@ -91,7 +91,6 @@ class MalmoRun(object):
         print "Mission running ",
 
         self.wrapperFun()
-        #self.agentFun()
 
         print
         print "Mission ended"
