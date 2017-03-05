@@ -1,8 +1,5 @@
 import MalmoPython
-import os
-import sys
 import time
-import random
 
 class Commands(object):
 

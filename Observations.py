@@ -1,8 +1,4 @@
 import MalmoPython
-import os
-import sys
-import time
-import random
 import re
 
 class Observations(object):
@@ -26,3 +22,51 @@ class Observations(object):
 			return self.grid[10] != "air"
 		else:
 			return self.grid[14] != "air"
+
+	def frontBlock(self):
+		self.update();
+		if (self.direction <= 45 and self.direction > 315):
+			return self.grid[17]
+		elif (self.direction <= 135 and self.direction > 45):
+			return self.grid[12]
+		elif (self.direction <= 225 and self.direction > 135):
+			return self.grid[10]
+		else:
+			return self.grid[14]
+
+	def backBlock(self):
+		self.update();
+		if (self.direction <= 45 and self.direction > 315):
+			return self.grid[10]
+		elif (self.direction <= 135 and self.direction > 45):
+			return self.grid[14]
+		elif (self.direction <= 225 and self.direction > 135):
+			return self.grid[17]
+		else:
+			return self.grid[12]
+
+	def leftBlock(self):
+		self.update();
+		if (self.direction <= 45 and self.direction > 315):
+			return self.grid[14]
+		elif (self.direction <= 135 and self.direction > 45):
+			return self.grid[17]
+		elif (self.direction <= 225 and self.direction > 135):
+			return self.grid[12]
+		else:
+			return self.grid[10]
+
+	def rightBlock(self):
+		self.update();
+		if (self.direction <= 45 and self.direction > 315):
+			return self.grid[12]
+		elif (self.direction <= 135 and self.direction > 45):
+			return self.grid[10]
+		elif (self.direction <= 225 and self.direction > 135):
+			return self.grid[14]
+		else:
+			return self.grid[17]
+
+	def getDirection(self):
+		self.update()
+		return self.direction
