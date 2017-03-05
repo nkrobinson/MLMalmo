@@ -1,8 +1,5 @@
 import MalmoPython
-import os
-import sys
 import time
-import random
 
 class Commands(object):
 
@@ -11,13 +8,15 @@ class Commands(object):
 
 	def moveForward(self):
 		self.agent_host.sendCommand( "move 1" )
-		time.sleep(0.5)
-		self.agent_host.sendCommand( "move 0" )
+		time.sleep(0.1)
+		#time.sleep(0.5)
+		#self.agent_host.sendCommand( "move 0" )
 
 	def moveBackward(self):
 		self.agent_host.sendCommand( "move -1" )
-		time.sleep(0.5)
-		self.agent_host.sendCommand( "move 0" )
+		time.sleep(0.1)
+		#time.sleep(0.5)
+		#self.agent_host.sendCommand( "move 0" )
 
 	def moveRight(self):
 		self.agent_host.sendCommand( "strafe 1" )
@@ -31,16 +30,18 @@ class Commands(object):
 
 	def turnRight(self):
 		self.agent_host.sendCommand( "turn 1" )
-		time.sleep(0.5)
-		self.agent_host.sendCommand( "turn 0" )
+		time.sleep(0.1)
+		#time.sleep(0.5)
+		#self.agent_host.sendCommand( "turn 0" )
 
 	def turnLeft(self):
 		self.agent_host.sendCommand( "turn -1" )
-		time.sleep(0.5)
-		self.agent_host.sendCommand( "turn 0" )
+		time.sleep(0.1)
+		#time.sleep(0.5)
+		#self.agent_host.sendCommand( "turn 0" )
 
 	def startJump(self):
 		self.agent_host.sendCommand( "jump 1" )
-		
+
 	def stopJump(self):
 		self.agent_host.sendCommand( "jump 0" )
