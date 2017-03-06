@@ -14,8 +14,8 @@
 		<MazeDecorator>
 			<SizeAndPosition length="60" width="60" yOrigin="225" zOrigin="0" height="180"/>
 			<GapProbability variance="0.4">0.5</GapProbability>
-			<Seed>23232343</Seed>
-			<MaterialSeed>23232343</MaterialSeed>
+			<Seed>23232352</Seed>
+			<MaterialSeed>23232352</MaterialSeed>
 			<AllowDiagonalMovement>false</AllowDiagonalMovement>
 			<StartBlock fixedToEdge="true" type="emerald_block" height="1"/>
 			<EndBlock fixedToEdge="true" type="redstone_block" height="12"/>
@@ -23,7 +23,7 @@
 			<FloorBlock type="stone" variant="smooth_granite"/>
 			<SubgoalBlock type="beacon sea_lantern glowstone"/>
 			<OptimalPathBlock type="stone" variant="smooth_granite andesite smooth_diorite diorite"/>
-			<GapBlock type="lapis_ore stained_hardened_clay air" colour="WHITE ORANGE MAGENTA LIGHT_BLUE YELLOW LIME PINK GRAY SILVER CYAN PURPLE BLUE BROWN GREEN RED BLACK" height="3" heightVariance="3"/>
+			<GapBlock type="sand" colour="WHITE ORANGE MAGENTA LIGHT_BLUE YELLOW LIME PINK GRAY SILVER CYAN PURPLE BLUE BROWN GREEN RED BLACK" height="3" heightVariance="3"/>
 			<AddQuitProducer description="finished maze"/>
 			<AddNavigationObservations/>
 		</MazeDecorator>
