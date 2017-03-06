@@ -6,6 +6,8 @@ Used as a class to run the Malmo system with given parameters. To be used for ma
 '''
 
 from Commands import Commands
+from Observations import Observations
+from Blocks import Blocks
 
 import MalmoPython
 import os
@@ -22,6 +24,8 @@ class MalmoRun(object):
         self.mission_xml = None
         self.agentFun = None
         self.c = Commands(self.agent_host)
+        self.o = Observations(self.agent_host)
+        self.b = Blocks()
 
     def setXML(self, xml):
         self.mission_xml = xml

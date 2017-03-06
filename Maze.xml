@@ -41,8 +41,8 @@
         <ContinuousMovementCommands turnSpeedDegs="360"/>
         <ObservationFromGrid>
             <Grid name="AgentGrid">
-                <min x="1" y="0" z="1"/>
-                <max x="3" y="1" z="3"/>
+                <min x="-1" y="-1" z="-1"/>
+                <max x="1" y="1" z="1"/>
             </Grid>
         </ObservationFromGrid>
         <RewardForTouchingBlockType>
