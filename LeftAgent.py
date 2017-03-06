@@ -80,6 +80,7 @@ def agentFun():
 				#print "Moving Forward"
 				mr.c.turnLeft()
 				mr.c.moveForward()
+			time.sleep(0.1)
 		world_state = mr.agent_host.getWorldState()
 
 mr = MalmoRun()
