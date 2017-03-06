@@ -26,8 +26,8 @@ def agentFun():
 		observationsNum = world_state.number_of_observations_since_last_state
 		if observationsNum > 0:
 			print "Got " + str(observationsNum) + " observations since last state."
-			print "World state observations: " + str(len(world_state.observations))
-			mr.o.update()
+			print "LeftAgent: World state observations: " + str(len(world_state.observations))
+			mr.o.update(world_state.observations[0].text)
 			if(mr.o.leftBlock() == wall):
 				if(mr.o.frontBlock() != wall):
 					mr.c.moveForward()

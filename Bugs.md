@@ -1,5 +1,7 @@
 #Bugs
 ##Active
+###
+Different number of observations in LeftAgent & Observations
 
 ##Fixed
 ###GP is not sequential

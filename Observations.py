@@ -6,10 +6,13 @@ class Observations(object):
 	def __init__(self, agent_host):
 		self.agent_host = agent_host
 
-	def update(self):
-		world_state = self.agent_host.getWorldState()
-		print len(world_state.observations)
-		self.observations = world_state.observations[0].text
+	def update(self, _observations=None):
+		if _observations is None:
+			world_state = self.agent_host.getWorldState()
+			print "Obserations: World state observations: " + str(len(world_state.observations))
+			self.observations = world_state.observations[0].text
+		else:
+			self.observations = _observations
 		self.direction = re.split(',', self.observations)[14]
 		self.grid = re.split(',', re.split('[\[\]]', self.observations)[1])
 
