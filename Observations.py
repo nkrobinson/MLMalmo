@@ -6,6 +6,7 @@ class Observations(object):
 	def __init__(self, agent_host):
 		self.agent_host = agent_host
 
+<<<<<<< HEAD
 	def update(self):
 		world_state = self.agent_host.peekWorldState()
 		self.observations = world_state.observations[0].text
@@ -14,6 +15,20 @@ class Observations(object):
 		self.distance = 0
 
 	def frontBlocked(self):
+=======
+	def update(self, _observations=None):
+		if _observations is None:
+			world_state = self.agent_host.getWorldState()
+			print "Obserations: World state observations: " + str(len(world_state.observations))
+			self.observations = world_state.observations[0].text
+		else:
+			self.observations = _observations
+		self.direction = re.split(',', self.observations)[14]
+		self.grid = re.split(',', re.split('[\[\]]', self.observations)[1])
+
+	def frontBlocked(self):
+		self.update();
+>>>>>>> LeftAgent
 		if (self.direction <= 45 and self.direction > 315):
 			return self.grid[17] != "air"
 		elif (self.direction <= 135 and self.direction > 45):
