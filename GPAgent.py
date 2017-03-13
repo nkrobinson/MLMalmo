@@ -39,7 +39,7 @@ mr = MalmoRun()
 
 pset = gp.PrimitiveSetTyped("MAIN", [], [])
 #Function Primitives
-pset.addPrimitive(prog2, [None, None], None)
+pset.addPrimitive(prog2, [int, int], int)
 #pset.addPrimitive(prog3, [None, None, None], None)
 pset.addPrimitive(ifThenElse, [bool, int, int], int)
 

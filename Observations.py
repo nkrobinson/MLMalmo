@@ -7,7 +7,7 @@ class Observations(object):
 		self.agent_host = agent_host
 
 	def update(self):
-		world_state = self.agent_host.getWorldState()
+		world_state = self.agent_host.peekWorldState()
 		self.observations = world_state.observations[0].text
 		self.direction = re.split(',', self.observations)[14]
 		self.grid = re.split(',', re.split('[\[\]]', self.observations)[1])
