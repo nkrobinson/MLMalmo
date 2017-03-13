@@ -28,6 +28,22 @@ class Commands(object):
 		time.sleep(0.5)
 		self.agent_host.sendCommand( "strafe 0" )
 
+	def moveNorth(self):
+		self.agent_host.sendCommand( "movenorth 1" )
+		time.sleep(0.1)
+
+	def moveSouth(self):
+		self.agent_host.sendCommand( "movesouth 1" )
+		time.sleep(0.1)
+
+	def moveEast(self):
+		self.agent_host.sendCommand( "moveeast 1" )
+		time.sleep(0.1)
+
+	def moveWest(self):
+		self.agent_host.sendCommand( "movewest 1" )
+		time.sleep(0.1)
+
 	def turnRight(self):
 		self.agent_host.sendCommand( "turn 1" )
 		time.sleep(0.1)
