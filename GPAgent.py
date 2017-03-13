@@ -37,30 +37,34 @@ def ifThenElse(in1, out1, out2):
 
 mr = MalmoRun()
 
-pset = gp.PrimitiveSetTyped("MAIN", None, None)
+adfsetbool = gp.PrimitiveSetTyped("BOOL", [bool, bool], bool)
+#Bool Operators
+adfsetbool.addPrimitive(operator.and_, [bool, bool], bool)
+adfsetbool.addPrimitive(operator.or_, [bool, bool], bool)
+adfsetbool.addPrimitive(operator.not_, [bool], bool)
 
+adfsetfloat = gp.PrimitiveSetTyped("FLOAT", [float, float], bool)
+#Float Operators
+adfsetfloat.addPrimitive(operator.add, [float,float], float)
+adfsetfloat.addPrimitive(operator.sub, [float,float], float)
+adfsetfloat.addPrimitive(operator.mul, [float,float], float)
+adfsetfloat.addPrimitive(operator.div, [float,float], float)
+adfsetfloat.addPrimitive(operator.lt, [float, float], bool)
+adfsetfloat.addPrimitive(operator.le, [float, float], bool)
+adfsetfloat.addPrimitive(operator.eq, [float, float], bool)
+adfsetfloat.addPrimitive(operator.gt, [float, float], bool)
+adfsetfloat.addPrimitive(operator.ge, [float, float], bool)
+
+adfsetstr = gp.PrimitiveSetTyped("STR", [str, str], bool)
+#String Operators
+adfsetstr.addPrimitive(operator.eq, [str, str], bool)
+adfsetstr.addPrimitive(operator.ne, [str, str], bool)
+
+pset = gp.PrimitiveSetTyped("MAIN", None, None)
 #Function Primitives
 pset.addPrimitive(prog2, [None, None], None)
-#pset.addPrimitive(prog3, [None, None, None], None)
+pset.addPrimitive(prog3, [None, None, None], None)
 pset.addPrimitive(ifThenElse, [bool, None, None], None)
-
-#Bool Operators
-pset.addPrimitive(operator.and_, [bool, bool], bool)
-pset.addPrimitive(operator.or_, [bool, bool], bool)
-pset.addPrimitive(operator.not_, [bool], bool)
-
-#Float Operators
-pset.addPrimitive(operator.add, [float,float], float)
-pset.addPrimitive(operator.sub, [float,float], float)
-pset.addPrimitive(operator.mul, [float,float], float)
-pset.addPrimitive(operator.div, [float,float], float)
-
-pset.addPrimitive(operator.lt, [float, float], bool)
-pset.addPrimitive(operator.le, [float, float], bool)
-pset.addPrimitive(operator.eq, [float, float], bool)
-pset.addPrimitive(operator.gt, [float, float], bool)
-pset.addPrimitive(operator.ge, [float, float], bool)
-
 #Function Terminals
 pset.addTerminal(mr.c.moveForward, None)
 pset.addTerminal(mr.c.moveBackward, None)
@@ -70,11 +74,6 @@ pset.addTerminal(mr.c.turnRight, None)
 pset.addTerminal(mr.c.turnLeft, None)
 #pset.addTerminal(mr.c.startJump, None)
 #pset.addTerminal(mr.c.stopJump, None)
-
-#String Operators
-pset.addPrimitive(operator.eq, [str, str], bool)
-pset.addPrimitive(operator.ne, [str, str], bool)
-
 #String Terminals
 pset.addTerminal(mr.o.frontBlock, str)
 pset.addTerminal(mr.o.backBlock, str)
@@ -86,13 +85,15 @@ pset.addTerminal(mr.b.getPath, str)
 pset.addTerminal(mr.b.getSubGoal, str)
 pset.addTerminal(mr.b.getGoal, str)
 pset.addTerminal(mr.b.getStart, str)
-
 #Float Terminals
 pset.addTerminal(mr.o.getDirection, float)
 pset.addEphemeralConstant("rand100", lambda: random.random() * 100, float)
-
 #Bool Terminals
 pset.addTerminal(True, bool)
+
+pset.addADF(adfsetbool)
+pset.addADF(adfsetfloat)
+pset.addADF(adfsetstr)
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
@@ -100,15 +101,20 @@ creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
 toolbox = base.Toolbox()
 
 # Attribute generator
-toolbox.register("expr_init", gp.genFull, pset=pset, min_=0, max_=3)
+toolbox.register("main_init", gp.genFull, pset=pset, min_=0, max_=3)
+toolbox.register("bool_init", gp.genFull, pset=adfsetbool, min_=0, max_=3)
+toolbox.register("float_init", gp.genFull, pset=adfsetfloat, min_=0, max_=3)
+toolbox.register("str_init", gp.genFull, pset=adfsetstr, min_=0, max_=3)
+
+func_cycle = [toolbox.main_init, toolbox.bool_init, toolbox.float_init, toolbox.str_init]
 
 # Structure initializers
-toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr_init)
+toolbox.register("individual", tools.initIterate, creator.Individual, func_cycle)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 def evalMalmoAgent(individual):
 	# Transform the tree expression to functionnal Python code
-	routine = gp.compile(individual, pset)
+	routine = gp.compileADF(individual, [pset, adfsetbool, adfsetfloat, adfsetstr])
 	print "Individual: ",
 	print individual
 	# Run the generated routine
