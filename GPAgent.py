@@ -37,11 +37,12 @@ def ifThenElse(in1, out1, out2):
 
 mr = MalmoRun()
 
-pset = gp.PrimitiveSetTyped("MAIN", [], [])
+pset = gp.PrimitiveSetTyped("MAIN", None, None)
+
 #Function Primitives
-pset.addPrimitive(prog2, [int, int], int)
+pset.addPrimitive(prog2, [None, None], None)
 #pset.addPrimitive(prog3, [None, None, None], None)
-pset.addPrimitive(ifThenElse, [bool, int, int], int)
+pset.addPrimitive(ifThenElse, [bool, None, None], None)
 
 #Bool Operators
 pset.addPrimitive(operator.and_, [bool, bool], bool)
@@ -61,14 +62,18 @@ pset.addPrimitive(operator.gt, [float, float], bool)
 pset.addPrimitive(operator.ge, [float, float], bool)
 
 #Function Terminals
-pset.addTerminal(mr.c.moveForward, int)
-pset.addTerminal(mr.c.moveBackward, int)
+pset.addTerminal(mr.c.moveForward, None)
+pset.addTerminal(mr.c.moveBackward, None)
 #pset.addTerminal(mr.c.moveRight, None)
 #pset.addTerminal(mr.c.moveLeft, None)
-pset.addTerminal(mr.c.turnRight, int)
-pset.addTerminal(mr.c.turnLeft, int)
+pset.addTerminal(mr.c.turnRight, None)
+pset.addTerminal(mr.c.turnLeft, None)
 #pset.addTerminal(mr.c.startJump, None)
 #pset.addTerminal(mr.c.stopJump, None)
+
+#String Operators
+pset.addPrimitive(operator.eq, [str, str], bool)
+pset.addPrimitive(operator.ne, [str, str], bool)
 
 #String Terminals
 pset.addTerminal(mr.o.frontBlock, str)
@@ -87,7 +92,6 @@ pset.addTerminal(mr.o.getDirection, float)
 pset.addEphemeralConstant("rand100", lambda: random.random() * 100, float)
 
 #Bool Terminals
-pset.addTerminal(False, bool)
 pset.addTerminal(True, bool)
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
@@ -96,7 +100,7 @@ creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
 toolbox = base.Toolbox()
 
 # Attribute generator
-toolbox.register("expr_init", gp.genFull, pset=pset, min_=1, max_=4)
+toolbox.register("expr_init", gp.genFull, pset=pset, min_=0, max_=3)
 
 # Structure initializers
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr_init)
@@ -116,7 +120,7 @@ def evalMalmoAgent(individual):
 	return (reward,)
 
 toolbox.register("evaluate", evalMalmoAgent)
-toolbox.register("select", tools.selTournament, tournsize=7)
+toolbox.register("select", tools.selTournament, tournsize=4)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
 toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
@@ -128,7 +132,7 @@ def main():
 		xml = f.read()
 		mr.setXML(xml)
 
-	pop = toolbox.population(n=10)
+	pop = toolbox.population(n=5)
 	hof = tools.HallOfFame(1)
 	stats = tools.Statistics(lambda ind: ind.fitness.values)
 	stats.register("avg", numpy.mean)
@@ -136,7 +140,7 @@ def main():
 	stats.register("min", numpy.min)
 	stats.register("max", numpy.max)
 
-	algorithms.eaSimple(pop, toolbox, 0.5, 0.2, 30, stats, halloffame=hof)
+	algorithms.eaSimple(pop, toolbox, 0.5, 0.2, 10, stats, halloffame=hof)
 
 	print "Hall Of Fame: ",
 	print hof

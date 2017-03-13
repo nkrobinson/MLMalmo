@@ -7,12 +7,14 @@ class Commands(object):
 		self.agent_host = agent_host
 
 	def moveForward(self):
+		print "moveForward"
 		self.agent_host.sendCommand( "move 1" )
 		time.sleep(0.1)
 		#time.sleep(0.5)
 		#self.agent_host.sendCommand( "move 0" )
 
 	def moveBackward(self):
+		print "moveBackward"
 		self.agent_host.sendCommand( "move -1" )
 		time.sleep(0.1)
 		#time.sleep(0.5)
@@ -45,12 +47,14 @@ class Commands(object):
 		time.sleep(0.1)
 
 	def turnRight(self):
+		print "turnRight"
 		self.agent_host.sendCommand( "turn 1" )
 		time.sleep(0.1)
 		#time.sleep(0.5)
 		#self.agent_host.sendCommand( "turn 0" )
 
 	def turnLeft(self):
+		print "turnLeft"
 		self.agent_host.sendCommand( "turn -1" )
 		time.sleep(0.1)
 		#time.sleep(0.5)
