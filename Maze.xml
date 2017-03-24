@@ -48,10 +48,10 @@
 		<ObservationFromFullStats/>
         <RewardForTouchingBlockType>
             <Block reward="1000.0" type="redstone_block" behaviour="onceOnly"/>
-			<Block reward="20.0" type="beacon sea_lantern glowstone" behaviour="oncePerBlock"/>
-			<Block reward="-20" type="grass"/>
+			<Block reward="30.0" type="beacon sea_lantern glowstone" behaviour="oncePerBlock"/>
+			<Block reward="-30" type="grass"/>
         </RewardForTouchingBlockType>
-        <RewardForSendingCommand reward="-2.0" />
+        <RewardForSendingCommand reward="-1.0" />
         <AgentQuitFromTouchingBlockType>
             <Block type="redstone_block" description="found_goal" />
         </AgentQuitFromTouchingBlockType>
