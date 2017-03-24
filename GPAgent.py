@@ -36,12 +36,12 @@ pset.addPrimitive(prog3, 3)
 
 pset.addTerminal(mr.c.moveForward)
 pset.addTerminal(mr.c.moveBackward)
-pset.addTerminal(mr.c.moveRight)
-pset.addTerminal(mr.c.moveLeft)
+#pset.addTerminal(mr.c.moveRight)
+#pset.addTerminal(mr.c.moveLeft)
 pset.addTerminal(mr.c.turnRight)
 pset.addTerminal(mr.c.turnLeft)
-pset.addTerminal(mr.c.startJump)
-pset.addTerminal(mr.c.stopJump)
+#pset.addTerminal(mr.c.startJump)
+#pset.addTerminal(mr.c.stopJump)
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
@@ -81,7 +81,7 @@ def main():
 		xml = f.read()
 		mr.setXML(xml)
 
-	pop = toolbox.population(n=5)
+	pop = toolbox.population(n=30)
 	hof = tools.HallOfFame(1)
 	stats = tools.Statistics(lambda ind: ind.fitness.values)
 	stats.register("avg", numpy.mean)
@@ -89,7 +89,7 @@ def main():
 	stats.register("min", numpy.min)
 	stats.register("max", numpy.max)
 
-	algorithms.eaSimple(pop, toolbox, 0.5, 0.2, 40, stats, halloffame=hof)
+	algorithms.eaSimple(pop, toolbox, 0.5, 0.2, 20, stats, halloffame=hof)
 
 	print "Hall Of Fame: ",
 	print hof
