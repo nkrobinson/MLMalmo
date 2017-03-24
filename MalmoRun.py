@@ -23,9 +23,10 @@ class MalmoRun(object):
         self.agent_host = MalmoPython.AgentHost()
         self.mission_xml = None
         self.agentFun = None
-        self.c = Commands(self.agent_host)
-        self.o = Observations(self.agent_host)
+        self.c = Commands(self)
+        self.o = Observations(self)
         self.b = Blocks()
+        self.reward = 0
 
     def setXML(self, xml):
         self.mission_xml = xml
@@ -33,17 +34,28 @@ class MalmoRun(object):
     def setAgentFun(self, fun):
         self.agentFun = fun
 
+    def checkWorldState(self):
+        world_state = self.agent_host.peakWorldState()
+        for reward in world_state.rewards:
+            self.reward += reward.getValue()
+        return world_state
+
+    def getWorldState(self):
+        world_state = self.agent_host.getWorldState()
+        for reward in world_state.rewards:
+            self.reward += reward.getValue()
+        return world_state
+
     def wrapperFun(self):
         world_state = self.agent_host.getWorldState()
+        self.reward = 0
         while world_state.is_mission_running:
             self.agentFun()
             world_state = self.agent_host.getWorldState()
-        self.end_reward = 0
-        for reward in world_state.rewards:
-            self.end_reward += reward.getValue()
+
 
     def getReward(self):
-        return self.end_reward
+        return self.reward
 
     def runAgent(self):
         #Check for agent and server information
