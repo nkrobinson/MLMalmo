@@ -35,7 +35,7 @@ class MalmoRun(object):
         self.agentFun = fun
 
     def checkWorldState(self):
-        world_state = self.agent_host.peakWorldState()
+        world_state = self.agent_host.peekWorldState()
         for reward in world_state.rewards:
             self.reward += reward.getValue()
         return world_state
