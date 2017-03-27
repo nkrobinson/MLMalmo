@@ -71,9 +71,9 @@ class GeneticAlgorithm:
     def Evolve(self, pop):
         newpop = []
         bestIndex = np.argsort(self.PopFitness(pop), axis=0)[::-1]
-        self.popbest = pop[bestIndex[0]]
+        popbest = pop[bestIndex[0]]
         if self.elitism:
-            newpop.append(np.array(self.popbest))
+            newpop.append(np.array(popbest))
         while len(newpop) != len(pop):
             newpop.append(self.TournamentSelection(pop, bestIndex.tolist()))
         return newpop
@@ -86,7 +86,9 @@ class GeneticAlgorithm:
             print "Generation: ",
             print genNum
             pop = self.Evolve(pop)
-        return self.popbest
+        fvalues = self.PopFitness(pop)
+        idx = np.argsort(fvalues, axis=0)[::-1]
+        return fvalues[idx[0]]
 
     def Run(self):
         pop = self.InitialGeneration()
