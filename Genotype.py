@@ -14,8 +14,8 @@ class Genotype:
 		self.generate = fun
 
 	def mutate(self, chromosome):
-		for num in range(random.randint(1,self.genotype.size)):
-			index = random.randint(0,self.genotype.size-1)
+		for num in range(random.randint(1,self.size)):
+			index = random.randint(0,self.size-1)
 			chromosome[index] = chromosome[index] + random.uniform(-0.5,0.5)
 		return chromosome
 

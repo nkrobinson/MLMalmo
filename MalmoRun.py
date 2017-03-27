@@ -41,6 +41,7 @@ class MalmoRun(object):
         return world_state
 
     def getWorldState(self):
+        #check for update
         world_state = self.agent_host.getWorldState()
         for reward in world_state.rewards:
             self.reward += reward.getValue()
