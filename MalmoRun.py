@@ -50,8 +50,9 @@ class MalmoRun(object):
     def wrapperFun(self):
         world_state = self.agent_host.getWorldState()
         self.reward = 0
+        funOutput = 0.0
         while world_state.is_mission_running:
-            self.agentFun()
+            funOutput = self.agentFun(funOutput)
             world_state = self.agent_host.getWorldState()
 
 
