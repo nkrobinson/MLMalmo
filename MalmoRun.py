@@ -54,7 +54,6 @@ class MalmoRun(object):
             self.agentFun()
             world_state = self.getWorldState()
 
-
     def getReward(self):
         return self.reward
 

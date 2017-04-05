@@ -1,5 +1,6 @@
 import MalmoPython
 import re
+import json
 
 class Observations(object):
 
@@ -9,16 +10,18 @@ class Observations(object):
 
     def update(self):
         world_state = self.mr.checkWorldState()
-        if len(world_state.observations) == 0:
-            return
-        #print "Observations: World state observations: " + str(world_state.observations)
-        #print "Length: " + str(len(world_state.observations))
-        self.observations = world_state.observations[0].text
-        self.direction = float(re.split(',', self.observations)[14][6:])
-        self.grid = re.split(',', re.split('[\[\]]', self.observations)[1])
+        while len(world_state.observations) == 0:
+            if not world_state.is_mission_running:
+                return
+            world_state = self.mr.checkWorldState()
+        print "Observations: World state observations: " + str(world_state.observations[0].text)
+        # print "Length: " + str(len(world_state.observations))
+
+        self.observations = json.loads(world_state.observations[0].text)
+        self.direction = self.observations['Yaw']
+        self.grid = self.observations['AgentGrid']
 
     def frontBlocked(self):
-        #self.update();
         if (self.direction <= 45 or self.direction > 315):
             return self.grid[16] != '"air"'
         elif (self.direction <= 135 and self.direction > 45):
@@ -29,7 +32,6 @@ class Observations(object):
             return self.grid[14] != '"air"'
 
     def backBlocked(self):
-        #self.update();
         if (self.direction <= 45 or self.direction > 315):
             return self.grid[10] != '"air"'
         elif (self.direction <= 135 and self.direction > 45):
@@ -39,9 +41,7 @@ class Observations(object):
         else:
             return self.grid[12] != '"air"'
 
-#FRONT?
     def leftBlocked(self):
-        #self.update();
         if (self.direction <= 45 or self.direction > 315):
             return self.grid[14] != '"air"'
         elif (self.direction <= 135 and self.direction > 45):
@@ -52,7 +52,6 @@ class Observations(object):
             return self.grid[10] != '"air"'
 
     def rightBlocked(self):
-        #self.update();
         if (self.direction <= 45 or self.direction > 315):
             return self.grid[12] != '"air"'
         elif (self.direction <= 135 and self.direction > 45):
@@ -63,7 +62,6 @@ class Observations(object):
             return self.grid[16] != '"air"'
 
     def frontBlock(self):
-        #self.update();
         if (self.direction <= 45 or self.direction > 315):
             return self.grid[16]
         elif (self.direction <= 135 and self.direction > 45):
@@ -74,7 +72,6 @@ class Observations(object):
             return self.grid[14]
 
     def backBlock(self):
-        #self.update();
         if (self.direction <= 45 or self.direction > 315):
             return self.grid[10]
         elif (self.direction <= 135 and self.direction > 45):
@@ -85,7 +82,6 @@ class Observations(object):
             return self.grid[12]
 
     def leftBlock(self):
-        #self.update();
         if (self.direction <= 45 or self.direction > 315):
             return self.grid[14]
         elif (self.direction <= 135 and self.direction > 45):
@@ -96,7 +92,6 @@ class Observations(object):
             return self.grid[10]
 
     def rightBlock(self):
-        #self.update();
         if (self.direction <= 45 or self.direction > 315):
             return self.grid[12]
         elif (self.direction <= 135 and self.direction > 45):
@@ -107,5 +102,4 @@ class Observations(object):
             return self.grid[16]
 
     def getDirection(self):
-        #self.update()
         return self.direction

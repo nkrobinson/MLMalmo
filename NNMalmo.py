@@ -22,28 +22,6 @@ def agentFun():
     observations = []
     MR.o.update()
     observations.append(MR.o.getDirection())
-    """
-    if MR.o.frontBlocked():
-        print "FRONT"
-        observations.append(1.0)
-    else:
-        observations.append(0.0)
-    if MR.o.backBlocked():
-        print "BACK"
-        observations.append(1.0)
-    else:
-        observations.append(0.0)
-    if MR.o.leftBlocked():
-        print "LEFT"
-        observations.append(1.0)
-    else:
-        observations.append(0.0)
-    if MR.o.rightBlocked():
-        print "RIGHT"
-        observations.append(1.0)
-    else:
-        observations.append(0.0)
-    """
     if MR.o.grid[10] != '"air"':
         observations.append(1.0)
     else:
@@ -60,20 +38,18 @@ def agentFun():
         observations.append(1.0)
     else:
         observations.append(0.0)
-    print "Observations: " + str(np.array(observations))
+    # print "Observations: " + str(np.array(observations))
 
     direction = NN.run(np.array(observations))
 
-    if direction[0] > -0.5 and direction[0] < 0.5:
+    if direction[0] < -0.5 or direction[0] > 0.5:
         if direction[0] > 0:
             MR.c.moveForward()
         else:
             MR.c.moveBackward()
-    else:
-        if direction[1] <= -0.5 and direction[1] >= 0.5:
-            # Currently does not work
-            MR.reward = MR.reward - 2
-    if direction[1] > -0.5 and direction[1] < 0.5:
+    elif direction[1] > -0.5 and direction[1] < 0.5:
+        MR.reward = MR.reward - 2
+    if direction[1] < -0.5 or direction[1] > 0.5:
         if direction[1] > 0:
             MR.c.turnLeft()
         else:
