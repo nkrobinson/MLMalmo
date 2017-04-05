@@ -69,6 +69,10 @@ def agentFun():
             MR.c.moveForward()
         else:
             MR.c.moveBackward()
+    else:
+        if direction[1] <= -0.5 and direction[1] >= 0.5:
+            # Currently does not work
+            MR.reward = MR.reward - 2
     if direction[1] > -0.5 and direction[1] < 0.5:
         if direction[1] > 0:
             MR.c.turnLeft()
@@ -77,7 +81,6 @@ def agentFun():
 
 def evalMalmoAgent(weights):
     NN.setWeights(weights)
-    # Run the generated routine
     MR.setAgentFun(agentFun)
     MR.runAgent()
     reward = MR.getReward()

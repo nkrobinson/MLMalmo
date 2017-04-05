@@ -52,7 +52,7 @@ class MalmoRun(object):
         self.reward = 0
         while world_state.is_mission_running:
             self.agentFun()
-            world_state = self.agent_host.getWorldState()
+            world_state = self.getWorldState()
 
 
     def getReward(self):
@@ -107,6 +107,8 @@ class MalmoRun(object):
         print
         print "Mission running ",
 
+        self.agent_host.sendCommand( "chat /time set 0" )
+        self.agent_host.sendCommand( "chat /weather clear" )
         self.wrapperFun()
 
         print
