@@ -19,14 +19,14 @@ import errno
 import numpy
 
 def progn(*args):
-	for arg in args:
-		arg()
+    for arg in args:
+        arg()
 
 def prog2(out1, out2):
-	return partial(progn,out1,out2)
+    return partial(progn,out1,out2)
 
 def prog3(out1, out2, out3):
-	return partial(progn,out1,out2,out3)
+    return partial(progn,out1,out2,out3)
 
 mr = MalmoRun()
 
@@ -56,17 +56,17 @@ toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.ex
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 def evalMalmoAgent(individual):
-	# Transform the tree expression to functionnal Python code
-	routine = gp.compile(individual, pset)
-	print "Individual: ",
-	print individual
-	# Run the generated routine
-	mr.setAgentFun(routine)
-	mr.runAgent()
-	reward = mr.getReward()
-	print "\tReward: ",
-	print reward
-	return (reward,)
+    # Transform the tree expression to functionnal Python code
+    routine = gp.compile(individual, pset)
+    print "Individual: ",
+    print individual
+    # Run the generated routine
+    mr.setAgentFun(routine)
+    mr.runAgent()
+    reward = mr.getReward()
+    print "\tReward: ",
+    print reward
+    return (reward,)
 
 toolbox.register("evaluate", evalMalmoAgent)
 toolbox.register("select", tools.selTournament, tournsize=7)
@@ -75,26 +75,26 @@ toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
 toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
 
 def main():
-	mission_file = './Maze.xml'
-	with open(mission_file, 'r') as f:
-		print "Loading mission from %s" % mission_file
-		xml = f.read()
-		mr.setXML(xml)
+    mission_file = './Maze.xml'
+    with open(mission_file, 'r') as f:
+        print "Loading mission from %s" % mission_file
+        xml = f.read()
+        mr.setXML(xml)
 
-	pop = toolbox.population(n=30)
-	hof = tools.HallOfFame(1)
-	stats = tools.Statistics(lambda ind: ind.fitness.values)
-	stats.register("avg", numpy.mean)
-	stats.register("std", numpy.std)
-	stats.register("min", numpy.min)
-	stats.register("max", numpy.max)
+    pop = toolbox.population(n=30)
+    hof = tools.HallOfFame(1)
+    stats = tools.Statistics(lambda ind: ind.fitness.values)
+    stats.register("avg", numpy.mean)
+    stats.register("std", numpy.std)
+    stats.register("min", numpy.min)
+    stats.register("max", numpy.max)
 
-	algorithms.eaSimple(pop, toolbox, 0.5, 0.2, 20, stats, halloffame=hof)
+    algorithms.eaSimple(pop, toolbox, 0.5, 0.2, 20, stats, halloffame=hof)
 
-	print "Hall Of Fame: ",
-	print hof
+    print "Hall Of Fame: ",
+    print hof
 
-	return pop, hof, stats
+    return pop, hof, stats
 
 if __name__ == "__main__":
-	main()
+    main()
