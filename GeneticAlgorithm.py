@@ -27,8 +27,6 @@ class GeneticAlgorithm:
         initGen = []
         for i in range(self.population_size):
             initGen.append(self.genotype.generate())
-        print "initGen"
-        print initGen
         return initGen
 
     def Fitness(self, chromosome):
@@ -53,9 +51,6 @@ class GeneticAlgorithm:
         index = random.randint(1, self.genotype.size -1)
         index2 = random.randint(index, self.genotype.size)
         result = []
-        # result = np.array(chromosome1[:index])
-        # result = np.append(result, chromosome2[index:index2])
-        # result = np.append(result, chromosome1[index2:])
         result.extend(chromosome1[:index])
         result.extend(chromosome2[index:index2])
         result.extend(chromosome1[index2:])
@@ -79,16 +74,10 @@ class GeneticAlgorithm:
         newpop = []
         bestIndex = np.argsort(self.PopFitness(pop), axis=0)[::-1]
         popbest = pop[bestIndex[0]]
-        print "Pop: "
-        print pop
-        print "Best pop: "
-        print popbest
         if self.elitism:
             newpop.append(popbest)
         while len(newpop) != len(pop):
             newpop.append(self.TournamentSelection(pop, bestIndex.tolist()))
-        print len(newpop)
-        print newpop
         return newpop
 
     def NewGeneration(self, pop):
@@ -105,6 +94,4 @@ class GeneticAlgorithm:
 
     def Run(self):
         pop = self.InitialGeneration()
-        # print "Initial Generation Pop:"
-        # print pop
         return self.NewGeneration(pop)

@@ -15,8 +15,6 @@ class NeuralNetwork(object):
         self.weightNum = self.W1.size +  self.W2.size
 
     def run(self, x):
-        #print "x: " + str(x)
-        #print "W1: " + str(self.W1)
         z = np.dot(x, self.W1)
         a = self.tanH(z)
         z2 = np.dot(a, self.W2)

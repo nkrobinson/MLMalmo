@@ -76,7 +76,6 @@ def agentFun():
             MR.c.turnRight()
 
 def evalMalmoAgent(weights):
-    print "Weights: " + str(weights)
     NN.setWeights(weights)
     # Run the generated routine
     MR.setAgentFun(agentFun)
