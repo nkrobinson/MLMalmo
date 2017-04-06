@@ -14,7 +14,7 @@ class Observations(object):
             if not world_state.is_mission_running:
                 return
             world_state = self.mr.checkWorldState()
-        print "Observations: World state observations: " + str(world_state.observations[0].text)
+        # print "Observations: World state observations: " + str(world_state.observations[0].text)
         # print "Length: " + str(len(world_state.observations))
 
         self.observations = json.loads(world_state.observations[0].text)

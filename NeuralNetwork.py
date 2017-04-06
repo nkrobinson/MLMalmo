@@ -5,9 +5,9 @@ import numpy as np
 
 class NeuralNetwork(object):
     def __init__(self):
-        self.inputLayerSize = 5
+        self.inputLayerSize = 28
         self.outputLayerSize = 2
-        self.hiddenLayerSize = 5
+        self.hiddenLayerSize = 14
 
         self.W1 = np.random.randn(self.inputLayerSize,self.hiddenLayerSize)
         self.W2 = np.random.randn(self.hiddenLayerSize,self.outputLayerSize)

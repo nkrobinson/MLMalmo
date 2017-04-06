@@ -80,6 +80,8 @@ class MalmoRun(object):
         my_mission = MalmoPython.MissionSpec(self.mission_xml, True)
         my_mission_record = MalmoPython.MissionRecordSpec("chat_reward.tgz")
 
+        # self.agent_host.setObservationsPolicy(KEEP_ALL_OBSERVATIONS)
+
         # Attempt to start a mission:
         max_retries = 3
         for retry in range(max_retries):
@@ -104,7 +106,7 @@ class MalmoRun(object):
                 print "Error:",error.text
 
         print
-        print "Mission running ",
+        print "Mission running "
 
         self.agent_host.sendCommand( "chat /time set 0" )
         self.agent_host.sendCommand( "chat /weather clear" )

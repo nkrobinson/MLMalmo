@@ -22,23 +22,29 @@ def agentFun():
     observations = []
     MR.o.update()
     observations.append(MR.o.getDirection())
-    if MR.o.grid[10] != '"air"':
-        observations.append(1.0)
-    else:
-        observations.append(0.0)
-    if MR.o.grid[12] != '"air"':
-        observations.append(1.0)
-    else:
-        observations.append(0.0)
-    if MR.o.grid[14] != '"air"':
-        observations.append(1.0)
-    else:
-        observations.append(0.0)
-    if MR.o.grid[16] != '"air"':
-        observations.append(1.0)
-    else:
-        observations.append(0.0)
-    # print "Observations: " + str(np.array(observations))
+    for i in range(len(MR.o.grid)):
+        if MR.o.grid[i] != '"air"':
+            observations.append(1.0)
+        else:
+            observations.append(0.0)
+    # if MR.o.grid[10] != '"air"':
+    #     observations.append(1.0)
+    # else:
+    #     observations.append(0.0)
+    # if MR.o.grid[12] != '"air"':
+    #     observations.append(1.0)
+    # else:
+    #     observations.append(0.0)
+    # if MR.o.grid[14] != '"air"':
+    #     observations.append(1.0)
+    # else:
+    #     observations.append(0.0)
+    # if MR.o.grid[16] != '"air"':
+    #     observations.append(1.0)
+    # else:
+    #     observations.append(0.0)
+    print "Observations: ",
+    print observations
 
     direction = NN.run(np.array(observations))
 
@@ -47,7 +53,7 @@ def agentFun():
             MR.c.moveForward()
         else:
             MR.c.moveBackward()
-    elif direction[1] > -0.5 and direction[1] < 0.5:
+    elif direction[1] >= -0.5 and direction[1] <= 0.5:
         MR.reward = MR.reward - 2
     if direction[1] < -0.5 or direction[1] > 0.5:
         if direction[1] > 0:
