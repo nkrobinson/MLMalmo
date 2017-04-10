@@ -23,30 +23,44 @@ def agentFun():
     MR.o.update()
     observations.append(MR.o.getDirection())
     for i in range(len(MR.o.grid)):
-        if MR.o.grid[i] != '"air"':
+        if MR.o.grid[i] != 'air':
             observations.append(1.0)
         else:
             observations.append(0.0)
-    # if MR.o.grid[10] != '"air"':
+    # if MR.o.grid[10] != 'air':
     #     observations.append(1.0)
     # else:
     #     observations.append(0.0)
-    # if MR.o.grid[12] != '"air"':
+    # if MR.o.grid[12] != 'air':
     #     observations.append(1.0)
     # else:
     #     observations.append(0.0)
-    # if MR.o.grid[14] != '"air"':
+    # if MR.o.grid[14] != 'air':
     #     observations.append(1.0)
     # else:
     #     observations.append(0.0)
-    # if MR.o.grid[16] != '"air"':
+    # if MR.o.grid[16] != 'air':
     #     observations.append(1.0)
     # else:
     #     observations.append(0.0)
     print "Observations: ",
-    print observations
+    print observations,
 
     direction = NN.run(np.array(observations))
+
+    # direction = (direction[0] * 4)
+
+    print "Direction: ",
+    print direction
+
+    # if direction < 1:
+    #     MR.c.moveForward()
+    # elif direction < 2:
+    #     MR.c.moveBackward()
+    # elif direction < 3:
+    #     MR.c.turnLeft()
+    # elif direction < 4:
+    #     MR.c.turnRight()
 
     if direction[0] < -0.5 or direction[0] > 0.5:
         if direction[0] > 0:

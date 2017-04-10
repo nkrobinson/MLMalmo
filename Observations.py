@@ -23,43 +23,43 @@ class Observations(object):
 
     def frontBlocked(self):
         if (self.direction <= 45 or self.direction > 315):
-            return self.grid[16] != '"air"'
+            return self.grid[16] != 'air'
         elif (self.direction <= 135 and self.direction > 45):
-            return self.grid[12] != '"air"'
+            return self.grid[12] != 'air'
         elif (self.direction <= 225 and self.direction > 135):
-            return self.grid[10] != '"air"'
+            return self.grid[10] != 'air'
         else:
-            return self.grid[14] != '"air"'
+            return self.grid[14] != 'air'
 
     def backBlocked(self):
         if (self.direction <= 45 or self.direction > 315):
-            return self.grid[10] != '"air"'
+            return self.grid[10] != 'air'
         elif (self.direction <= 135 and self.direction > 45):
-            return self.grid[14] != '"air"'
+            return self.grid[14] != 'air'
         elif (self.direction <= 225 and self.direction > 135):
-            return self.grid[16] != '"air"'
+            return self.grid[16] != 'air'
         else:
-            return self.grid[12] != '"air"'
+            return self.grid[12] != 'air'
 
     def leftBlocked(self):
         if (self.direction <= 45 or self.direction > 315):
-            return self.grid[14] != '"air"'
+            return self.grid[14] != 'air'
         elif (self.direction <= 135 and self.direction > 45):
-            return self.grid[16] != '"air"'
+            return self.grid[16] != 'air'
         elif (self.direction <= 225 and self.direction > 135):
-            return self.grid[12] != '"air"'
+            return self.grid[12] != 'air'
         else:
-            return self.grid[10] != '"air"'
+            return self.grid[10] != 'air'
 
     def rightBlocked(self):
         if (self.direction <= 45 or self.direction > 315):
-            return self.grid[12] != '"air"'
+            return self.grid[12] != 'air'
         elif (self.direction <= 135 and self.direction > 45):
-            return self.grid[10] != '"air"'
+            return self.grid[10] != 'air'
         elif (self.direction <= 225 and self.direction > 135):
-            return self.grid[14] != '"air"'
+            return self.grid[14] != 'air'
         else:
-            return self.grid[16] != '"air"'
+            return self.grid[16] != 'air'
 
     def frontBlock(self):
         if (self.direction <= 45 or self.direction > 315):
