@@ -1,6 +1,7 @@
 import MalmoPython
 import re
 import json
+import time
 
 class Observations(object):
 
@@ -12,7 +13,8 @@ class Observations(object):
         world_state = self.mr.checkWorldState()
         while len(world_state.observations) == 0:
             if not world_state.is_mission_running:
-                return
+                print "False"
+                return False
             world_state = self.mr.checkWorldState()
         # print "Observations: World state observations: " + str(world_state.observations[0].text)
         # print "Length: " + str(len(world_state.observations))
@@ -20,6 +22,8 @@ class Observations(object):
         self.observations = json.loads(world_state.observations[0].text)
         self.direction = self.observations['Yaw']
         self.grid = self.observations['AgentGrid']
+        print "True"
+        return True
 
     def frontBlocked(self):
         if (self.direction <= 45 or self.direction > 315):

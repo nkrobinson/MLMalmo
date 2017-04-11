@@ -27,7 +27,7 @@
             <AddQuitProducer description="finished maze"/>
             <AddNavigationObservations/>
         </MazeDecorator>
-        <ServerQuitFromTimeUp timeLimitMs="60000"/>
+        <ServerQuitFromTimeUp timeLimitMs="10000"/>
         <ServerQuitWhenAnyAgentFinishes />
     </ServerHandlers>
 </ServerSection>

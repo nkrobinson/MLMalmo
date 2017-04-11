@@ -20,7 +20,8 @@ NN = NeuralNetwork()
 def agentFun():
     time.sleep(0.1)
     observations = []
-    MR.o.update()
+    if not MR.o.update():
+        return
     observations.append(MR.o.getDirection())
     for i in range(len(MR.o.grid)):
         if MR.o.grid[i] != 'air':
@@ -43,15 +44,16 @@ def agentFun():
     #     observations.append(1.0)
     # else:
     #     observations.append(0.0)
-    print "Observations: ",
-    print observations,
+
+    # print "Observations: ",
+    # print observations,
 
     direction = NN.run(np.array(observations))
 
     # direction = (direction[0] * 4)
 
-    print "Direction: ",
-    print direction
+    # print "Direction: ",
+    # print direction
 
     # if direction < 1:
     #     MR.c.moveForward()
