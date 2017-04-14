@@ -1,12 +1,12 @@
 class Blocks(object):
 
     def __init__(self):
-        self.wall = '"stone"'
-        self.floor = '"stone"'
-        self.path = '"stone"'
-        self.subgoal = '"beacon"'
-        self.goal = '"redstone_block"'
-        self.start = '"emerald_block"'
+        self.wall = "stone"
+        self.floor = "stone"
+        self.path = "stone"
+        self.subgoal = "beacon"
+        self.goal = "redstone_block"
+        self.start = "emerald_block"
 
     def getWall(self):
         return self.wall
