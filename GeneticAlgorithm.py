@@ -83,21 +83,22 @@ class GeneticAlgorithm:
         return newpop
 
     def NewGeneration(self, pop):
-        f = open('GAValues', 'w')
+        GAValuesString = ""
         #fbest = np.inf
         genNum = 0
         for gen in range(self.generations):
-            genNum += 1
             print "Generation: ",
             print genNum
             pop = self.Evolve(pop)
-            print "Generation: " + str(genNum) + "  Best: " + str(self.popBestVal) + "\n"
-            f.write("Generation: " + str(genNum) + "  Best: " + str(self.popBestVal) + "\n")
+            GAValuesString = GAValuesString + "Generation: " + str(genNum) + "  Best: " + str(self.popBestVal) + "\n"
+            genNum += 1
         fvalues = self.PopFitness(pop)
         idx = np.argsort(fvalues, axis=0)[::-1]
         self.popBest = pop[idx[0]]
         self.popBestVal = fvalues[idx[0]]
-        f.write("Generation: " + str(genNum + 1) + "  Best: " + str(self.popBestVal) + "\n")
+        GAValuesString = GAValuesString + "Generation: " + str(genNum) + "  Best: " + str(self.popBestVal) + "\n"
+        f = open('GAValues', 'w')
+        f.write(GAValuesString)
         f.close()
         return self.popBest
 
