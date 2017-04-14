@@ -92,3 +92,5 @@ ENV/
 # Malmo Specific Files
 chat_reward.*
 SimpleMaze.*
+GAValues.*
+NNMalmoBest.*

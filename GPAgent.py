@@ -71,7 +71,8 @@ toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.ex
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 MR.gpFun = sum
-def gpLoop(direction):
+def gpLoop():
+    direction = MR.lastVal
     time.sleep(0.1)
     observations = []
     MR.o.update()

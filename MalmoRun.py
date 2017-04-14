@@ -50,11 +50,10 @@ class MalmoRun(object):
     def wrapperFun(self):
         world_state = self.agent_host.getWorldState()
         self.reward = 0
-        funOutput = 0.0
+        self.lastVal = 0.0
         while world_state.is_mission_running:
-            funOutput = self.agentFun(funOutput)
-            world_state = self.agent_host.getWorldState()
-
+            self.lastVal = self.agentFun()
+            world_state = self.getWorldState()
 
     def getReward(self):
         return self.reward
@@ -82,6 +81,8 @@ class MalmoRun(object):
         my_mission = MalmoPython.MissionSpec(self.mission_xml, True)
         my_mission_record = MalmoPython.MissionRecordSpec("chat_reward.tgz")
 
+        # self.agent_host.setObservationsPolicy(KEEP_ALL_OBSERVATIONS)
+
         # Attempt to start a mission:
         max_retries = 3
         for retry in range(max_retries):
@@ -106,8 +107,10 @@ class MalmoRun(object):
                 print "Error:",error.text
 
         print
-        print "Mission running ",
+        print "Mission running "
 
+        self.agent_host.sendCommand( "chat /time set 0" )
+        self.agent_host.sendCommand( "chat /weather clear 3000" )
         self.wrapperFun()
 
         print

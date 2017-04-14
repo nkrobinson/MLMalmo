@@ -10,10 +10,10 @@ class GeneticAlgorithm:
     def __init__(self,
                 genotype,
                 function,
-                generations=10,
-                population_size=20,
+                generations=30,
+                population_size=50,
                 mutate_chance=0.25,
-                tournamentSize=4,
+                tournamentSize=6,
                 elitism=True):
         self.elitism = elitism
         self.generations = generations
@@ -27,7 +27,7 @@ class GeneticAlgorithm:
         initGen = []
         for i in range(self.population_size):
             initGen.append(self.genotype.generate())
-        return np.array(initGen)
+        return initGen
 
     def Fitness(self, chromosome):
         return self.function(chromosome)
@@ -50,8 +50,10 @@ class GeneticAlgorithm:
             return chromosome1
         index = random.randint(1, self.genotype.size -1)
         index2 = random.randint(index, self.genotype.size)
-        result = np.append(chromosome1[:index], chromosome2[index:index2])
-        result = np.append(result, chromosome1[index2:])
+        result = []
+        result.extend(chromosome1[:index])
+        result.extend(chromosome2[index:index2])
+        result.extend(chromosome1[index2:])
         return result
 
     def TournamentSelection(self, pop, bestIndex):
@@ -70,25 +72,35 @@ class GeneticAlgorithm:
 
     def Evolve(self, pop):
         newpop = []
-        bestIndex = np.argsort(self.PopFitness(pop), axis=0)[::-1]
-        popbest = pop[bestIndex[0]]
+        popValues = self.PopFitness(pop)
+        bestIndex = np.argsort(popValues, axis=0)[::-1]
+        self.popBestVal = popValues[bestIndex[0]]
+        self.popBest = pop[bestIndex[0]]
         if self.elitism:
-            newpop.append(np.array(popbest))
+            newpop.append(self.popBest)
         while len(newpop) != len(pop):
             newpop.append(self.TournamentSelection(pop, bestIndex.tolist()))
         return newpop
 
     def NewGeneration(self, pop):
+        GAValuesString = ""
         #fbest = np.inf
         genNum = 0
         for gen in range(self.generations):
-            genNum += 1
             print "Generation: ",
             print genNum
             pop = self.Evolve(pop)
+            GAValuesString = GAValuesString + "Generation: " + str(genNum) + "  Best: " + str(self.popBestVal) + "\n"
+            genNum += 1
         fvalues = self.PopFitness(pop)
         idx = np.argsort(fvalues, axis=0)[::-1]
-        return fvalues[idx[0]]
+        self.popBest = pop[idx[0]]
+        self.popBestVal = fvalues[idx[0]]
+        GAValuesString = GAValuesString + "Generation: " + str(genNum) + "  Best: " + str(self.popBestVal) + "\n"
+        f = open('GAValues', 'w')
+        f.write(GAValuesString)
+        f.close()
+        return self.popBest
 
     def Run(self):
         pop = self.InitialGeneration()

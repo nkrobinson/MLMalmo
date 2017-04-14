@@ -18,82 +18,63 @@ MR = MalmoRun()
 NN = NeuralNetwork()
 
 def agentFun():
-	time.sleep(0.1)
-	observations = []
-	MR.o.update()
-	observations.append(MR.o.getDirection())
-	"""
-	if MR.o.frontBlocked():
-		print "FRONT"
-		observations.append(1.0)
-	else:
-		observations.append(0.0)
-	if MR.o.backBlocked():
-		print "BACK"
-		observations.append(1.0)
-	else:
-		observations.append(0.0)
-	if MR.o.leftBlocked():
-		print "LEFT"
-		observations.append(1.0)
-	else:
-		observations.append(0.0)
-	if MR.o.rightBlocked():
-		print "RIGHT"
-		observations.append(1.0)
-	else:
-		observations.append(0.0)
-	"""
-	if MR.o.grid[10] != '"air"':
-		observations.append(1.0)
-	else:
-		observations.append(0.0)
-	if MR.o.grid[12] != '"air"':
-		observations.append(1.0)
-	else:
-		observations.append(0.0)
-	if MR.o.grid[14] != '"air"':
-		observations.append(1.0)
-	else:
-		observations.append(0.0)
-	if MR.o.grid[16] != '"air"':
-		observations.append(1.0)
-	else:
-		observations.append(0.0)
-	print "Observations: " + str(np.array(observations))
+    time.sleep(0.1)
+    observations = []
+    if not MR.o.update():
+        return 0
 
-	direction = NN.run(np.array(observations))
+    observations.append(MR.o.getDirection())
+    for i in range(len(MR.o.gridFloat)):
+        observations.append(MR.o.gridFloat[i])
+    observations.append(MR.lastVal)
 
-	if direction[0] > -0.5 and direction[0] < 0.5:
-		if direction[0] > 0:
-			MR.c.moveForward()
-		else:
-			MR.c.moveBackward()
-	if direction[1] > -0.5 and direction[1] < 0.5:
-		if direction[1] > 0:
-			MR.c.turnLeft()
-		else:
-			MR.c.turnRight()
+    # print "Observations: ",
+    # print observations
+
+    direction = NN.run(np.array(observations))[0]
+    direction = (direction * 4)
+
+    # print "Direction: ",
+    # print direction
+
+    if direction < 1:
+        MR.c.moveForward()
+    elif direction < 2:
+        MR.c.moveBackward()
+    elif direction < 3:
+        MR.c.turnLeft()
+    elif direction < 4:
+        MR.c.turnRight()
+    return direction
 
 def evalMalmoAgent(weights):
-	NN.setWeights(weights)
-	# Run the generated routine
-	MR.setAgentFun(agentFun)
-	MR.runAgent()
-	reward = MR.getReward()
-	print "\tReward: ",
-	print reward
-	return (reward,)
+    reward = 0.0
+    NN.setWeights(weights)
+    # print "Weights: ",
+    # print np.array(weights)
+    MR.setAgentFun(agentFun)
 
-def main():
-	mission_file = './Maze.xml'
-	with open(mission_file, 'r') as f:
-		print "Loading mission from %s" % mission_file
-		xml = f.read()
-		MR.setXML(xml)
+    # for i in range(1,16):
+    for i in [1]:
+        loadXMLFile('./Mazes/Maze'+str(i)+'.xml')
+        MR.runAgent()
+        reward = reward + MR.getReward()
+
+    print "\tReward: ",
+    print reward
+    # return (reward,)
+    return reward
+
+def loadXMLFile(mission_file = './Mazes/Maze.xml'):
+    with open(mission_file, 'r') as f:
+        print "Loading mission from %s" % mission_file
+        xml = f.read()
+        MR.setXML(xml)
 
 if __name__ == "__main__":
-	main()
-	GA = GeneticAlgorithm(Genotype(NN.weightNum), evalMalmoAgent)
-	weights = GA.Run()
-	print "Final Weights: " + str(weights)
+    GA = GeneticAlgorithm(Genotype(NN.weightNum), evalMalmoAgent)
+    weights = GA.Run()
+    f = open('NNMalmoBest.txt', 'w')
+    print "Final Weights: " + str(weights)
+    f.write(str(weights))
+    f.close()
