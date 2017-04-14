@@ -18,10 +18,13 @@ class Observations(object):
         # print "Observations: World state observations: " + str(world_state.observations[0].text)
         # print "Length: " + str(len(world_state.observations))
 
-        self.observations = json.loads(world_state.observations[0].text)
-        self.direction = self.observations['Yaw']
-        self.grid = self.observations['AgentGrid']
-        self.gridFloat = map(self.mr.b.blockId, self.grid)
+        try:
+            self.observations = json.loads(world_state.observations[0].text)
+            self.direction = self.observations['Yaw']
+            self.grid = self.observations['AgentGrid']
+            self.gridFloat = map(self.mr.b.blockId, self.grid)
+        except KeyError:
+            return False
         return True
 
     def frontBlocked(self):
