@@ -50,8 +50,9 @@ class MalmoRun(object):
     def wrapperFun(self):
         world_state = self.agent_host.getWorldState()
         self.reward = 0
+        self.lastVal = 0.0
         while world_state.is_mission_running:
-            self.agentFun()
+            self.lastVal = self.agentFun()
             world_state = self.getWorldState()
 
     def getReward(self):
@@ -109,7 +110,7 @@ class MalmoRun(object):
         print "Mission running "
 
         self.agent_host.sendCommand( "chat /time set 0" )
-        self.agent_host.sendCommand( "chat /weather clear" )
+        self.agent_host.sendCommand( "chat /weather clear 3000" )
         self.wrapperFun()
 
         print

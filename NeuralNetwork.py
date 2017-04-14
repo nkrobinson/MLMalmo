@@ -1,13 +1,15 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import numpy as np
 
 class NeuralNetwork(object):
     def __init__(self):
-        self.inputLayerSize = 28
-        self.outputLayerSize = 2
-        self.hiddenLayerSize = 14
+        # self.inputLayerSize = 29
+        self.inputLayerSize = 11
+        self.outputLayerSize = 1
+        self.hiddenLayerSize = 8
+        # self.hiddenLayerSize = 20
 
         self.W1 = np.random.randn(self.inputLayerSize,self.hiddenLayerSize)
         self.W2 = np.random.randn(self.hiddenLayerSize,self.outputLayerSize)
@@ -16,9 +18,9 @@ class NeuralNetwork(object):
 
     def run(self, x):
         z = np.dot(x, self.W1)
-        a = self.tanH(z)
+        a = self.sigmoid(z)
         z2 = np.dot(a, self.W2)
-        y = self.tanH(z2)
+        y = self.sigmoid(z2)
         return y
 
     def sigmoid(self, z):

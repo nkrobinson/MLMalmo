@@ -13,7 +13,7 @@ class GeneticAlgorithm:
                 generations=30,
                 population_size=50,
                 mutate_chance=0.25,
-                tournamentSize=4,
+                tournamentSize=6,
                 elitism=True):
         self.elitism = elitism
         self.generations = generations
@@ -72,15 +72,18 @@ class GeneticAlgorithm:
 
     def Evolve(self, pop):
         newpop = []
-        bestIndex = np.argsort(self.PopFitness(pop), axis=0)[::-1]
-        popbest = pop[bestIndex[0]]
+        popValues = self.PopFitness(pop)
+        bestIndex = np.argsort(popValues, axis=0)[::-1]
+        self.popBestVal = popValues[bestIndex[0]]
+        self.popBest = pop[bestIndex[0]]
         if self.elitism:
-            newpop.append(popbest)
+            newpop.append(self.popBest)
         while len(newpop) != len(pop):
             newpop.append(self.TournamentSelection(pop, bestIndex.tolist()))
         return newpop
 
     def NewGeneration(self, pop):
+        f = open('GAValues', 'w')
         #fbest = np.inf
         genNum = 0
         for gen in range(self.generations):
@@ -88,9 +91,15 @@ class GeneticAlgorithm:
             print "Generation: ",
             print genNum
             pop = self.Evolve(pop)
+            print "Generation: " + str(genNum) + "  Best: " + str(self.popBestVal) + "\n"
+            f.write("Generation: " + str(genNum) + "  Best: " + str(self.popBestVal) + "\n")
         fvalues = self.PopFitness(pop)
         idx = np.argsort(fvalues, axis=0)[::-1]
-        return pop[idx[0]]
+        self.popBest = pop[idx[0]]
+        self.popBestVal = fvalues[idx[0]]
+        f.write("Generation: " + str(genNum + 1) + "  Best: " + str(self.popBestVal) + "\n")
+        f.close()
+        return self.popBest
 
     def Run(self):
         pop = self.InitialGeneration()

@@ -21,80 +21,60 @@ def agentFun():
     time.sleep(0.1)
     observations = []
     if not MR.o.update():
-        return
+        return 0
+
     observations.append(MR.o.getDirection())
-    for i in range(len(MR.o.grid)):
-        if MR.o.grid[i] != 'air':
-            observations.append(1.0)
-        else:
-            observations.append(0.0)
-    # if MR.o.grid[10] != 'air':
-    #     observations.append(1.0)
-    # else:
-    #     observations.append(0.0)
-    # if MR.o.grid[12] != 'air':
-    #     observations.append(1.0)
-    # else:
-    #     observations.append(0.0)
-    # if MR.o.grid[14] != 'air':
-    #     observations.append(1.0)
-    # else:
-    #     observations.append(0.0)
-    # if MR.o.grid[16] != 'air':
-    #     observations.append(1.0)
-    # else:
-    #     observations.append(0.0)
+    for i in range(len(MR.o.gridFloat)):
+        observations.append(MR.o.gridFloat[i])
+    observations.append(MR.lastVal)
 
     # print "Observations: ",
-    # print observations,
+    # print observations
 
-    direction = NN.run(np.array(observations))
-
-    # direction = (direction[0] * 4)
+    direction = NN.run(np.array(observations))[0]
+    direction = (direction * 4)
 
     # print "Direction: ",
     # print direction
 
-    # if direction < 1:
-    #     MR.c.moveForward()
-    # elif direction < 2:
-    #     MR.c.moveBackward()
-    # elif direction < 3:
-    #     MR.c.turnLeft()
-    # elif direction < 4:
-    #     MR.c.turnRight()
-
-    if direction[0] < -0.5 or direction[0] > 0.5:
-        if direction[0] > 0:
-            MR.c.moveForward()
-        else:
-            MR.c.moveBackward()
-    elif direction[1] >= -0.5 and direction[1] <= 0.5:
-        MR.reward = MR.reward - 2
-    if direction[1] < -0.5 or direction[1] > 0.5:
-        if direction[1] > 0:
-            MR.c.turnLeft()
-        else:
-            MR.c.turnRight()
+    if direction < 1:
+        MR.c.moveForward()
+    elif direction < 2:
+        MR.c.moveBackward()
+    elif direction < 3:
+        MR.c.turnLeft()
+    elif direction < 4:
+        MR.c.turnRight()
+    return direction
 
 def evalMalmoAgent(weights):
+    reward = 0.0
     NN.setWeights(weights)
+    # print "Weights: ",
+    # print np.array(weights)
     MR.setAgentFun(agentFun)
-    MR.runAgent()
-    reward = MR.getReward()
+
+    # for i in range(1,16):
+    for i in [1]:
+        loadXMLFile('./Mazes/Maze'+str(i)+'.xml')
+        MR.runAgent()
+        reward = reward + MR.getReward()
+
     print "\tReward: ",
     print reward
-    return (reward,)
+    # return (reward,)
+    return reward
 
-def main():
-    mission_file = './Maze.xml'
+def loadXMLFile(mission_file = './Mazes/Maze.xml'):
     with open(mission_file, 'r') as f:
         print "Loading mission from %s" % mission_file
         xml = f.read()
         MR.setXML(xml)
 
 if __name__ == "__main__":
-    main()
     GA = GeneticAlgorithm(Genotype(NN.weightNum), evalMalmoAgent)
     weights = GA.Run()
+    f = open('NNMalmoBest.txt', 'w')
     print "Final Weights: " + str(weights)
+    f.write(str(weights))
+    f.close()

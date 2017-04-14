@@ -43,3 +43,27 @@ class Blocks(object):
 
     def setStart(self, block):
         self.start = block
+
+    def blockId(self, block):
+        if block == "air":
+            return 0.0
+        elif block == "stone":
+            return 1.0
+        elif block == "grass":
+            return 2.0
+        elif block == "dirt":
+            return 3.0
+        elif block == "glowstone":
+            return 89.0
+        elif block == "emerald_block":
+            return 133.0
+        elif block == "beacon":
+            return 138.0
+        elif block == "redstone_block":
+            return 152.0
+        elif block == "stained_hardened_clay":
+            return 159.0
+        elif block == "sea_lantern":
+            return 169.0
+        else:
+            return -1.0
