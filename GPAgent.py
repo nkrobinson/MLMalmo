@@ -125,7 +125,6 @@ def evalMalmoAgent(individual):
     routine = gp.compile(individual, pset)
     MR.gpFun = routine
     MR.setAgentFun(gpLoop)
-    print "New Chromosome"
     # print "Individual: ",
     # print individual
 
@@ -136,14 +135,13 @@ def evalMalmoAgent(individual):
         MR.runAgent()
         currentReward = MR.getReward()
         currentTime = MR.agentTime
-        print i,
-        print ",",
-        print currentReward,
-        print ",",
-        print currentTime
+        # print i,
+        # print ",",
+        # print currentReward,
+        # print ",",
+        # print currentTime
         agentTime = agentTime + currentTime
         reward = reward + currentReward
-    print "Total,",
     print reward,
     print ",",
     print agentTime
@@ -173,8 +171,11 @@ def main():
     algorithms.eaSimple(pop, toolbox, CROSSOVER_PROBABILITY,
                         MUTATION_PROBABILITY, GENERATIONS, stats, halloffame=hof)
 
-    print "Hall Of Fame: ",
-    print hof
+    # print "Hall Of Fame: ",
+    # print str(hof[0])
+    f = open('GAMalmoBest.txt', 'w')
+    f.write(str(hof[0]))
+    f.close()
 
     return pop, hof, stats
 

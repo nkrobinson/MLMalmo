@@ -1,3 +1,3 @@
 
 
-echo "$(python GPAgent.py)" > "GPReturn.txt"
+python GPAgent.py > "GPReturn.txt"
