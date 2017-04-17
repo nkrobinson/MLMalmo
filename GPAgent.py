@@ -23,7 +23,7 @@ import math
 GENERATIONS = 30
 POPULATION = 50
 TOURNAMENT_SIZE = 6
-CROSSOVER_PROBABILITY = 0.5
+CROSSOVER_PROBABILITY = 0.75
 MUTATION_PROBABILITY = 0.2
 
 def ifThenElse(in1, out1, out2):
@@ -31,6 +31,11 @@ def ifThenElse(in1, out1, out2):
         return out1
     else:
         return out2
+
+def oneOver(x):
+    if x != 0:
+        return 1/x
+    return x
 
 MR = MalmoRun()
 
@@ -41,26 +46,28 @@ pset.addPrimitive(ifThenElse, [bool, float, float], float)
 pset.addPrimitive(operator.add, [float,float], float)
 pset.addPrimitive(operator.sub, [float,float], float)
 pset.addPrimitive(operator.mul, [float,float], float)
-#pset.addPrimitive(operator.div, [float,float], float)
+pset.addPrimitive(oneOver, [float], float)
 pset.addPrimitive(operator.neg, [float], float)
 
 pset.addPrimitive(operator.lt, [float, float], bool)
-pset.addPrimitive(operator.le, [float, float], bool)
+# pset.addPrimitive(operator.le, [float, float], bool)
 pset.addPrimitive(operator.eq, [float, float], bool)
 pset.addPrimitive(operator.gt, [float, float], bool)
-pset.addPrimitive(operator.ge, [float, float], bool)
+# pset.addPrimitive(operator.ge, [float, float], bool)
 pset.addPrimitive(operator.not_, [bool], bool)
+pset.addPrimitive(operator.and_, [bool, bool], bool)
+pset.addPrimitive(operator.or_, [bool, bool], bool)
 
 pset.addTerminal(True, bool)
 pset.addTerminal(MR.b.blockId("air"), float)
 pset.addTerminal(MR.b.blockId("stone"), float)
-pset.addTerminal(MR.b.blockId("dirt"), float)
-pset.addTerminal(MR.b.blockId("glowstone"), float)
-pset.addTerminal(MR.b.blockId("emerald_block"), float)
-pset.addTerminal(MR.b.blockId("beacon"), float)
+# pset.addTerminal(MR.b.blockId("dirt"), float)
+# pset.addTerminal(MR.b.blockId("glowstone"), float)
+# pset.addTerminal(MR.b.blockId("emerald_block"), float)
+# pset.addTerminal(MR.b.blockId("beacon"), float)
 pset.addTerminal(MR.b.blockId("redstone_block"), float)
-pset.addTerminal(MR.b.blockId("stained_hardened_clay"), float)
-pset.addTerminal(MR.b.blockId("sea_lantern"), float)
+# pset.addTerminal(MR.b.blockId("stained_hardened_clay"), float)
+# pset.addTerminal(MR.b.blockId("sea_lantern"), float)
 pset.addEphemeralConstant("rand100", lambda: random.random() * 1000, float)
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
@@ -77,24 +84,23 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 MR.gpFun = sum
 def gpLoop():
-    direction = MR.lastVal
     time.sleep(0.1)
     observations = []
     if not MR.o.update():
-        return 0
+        return -1.0
 
     observations.append(float(MR.o.getDirection()))
     for i in range(len(MR.o.gridFloat)):
-        observations.append(MR.o.gridFloat[i])
-    observations.append(MR.lastVal)
+        observations.append(float(MR.o.gridFloat[i]))
+    observations.append(float(MR.lastVal))
 
     # print "Observations: ",
     # print observations
 
     direction = math.floor(MR.gpFun(observations[0],observations[1],observations[2],
-                          observations[3],observations[4],observations[5],
-                          observations[6],observations[7],observations[8],
-                          observations[9],observations[10]))
+                                    observations[3],observations[4],observations[5],
+                                    observations[6],observations[7],observations[8],
+                                    observations[9],observations[10]))
 
     direction = direction % 4
 
@@ -113,22 +119,34 @@ def gpLoop():
 
 
 def evalMalmoAgent(individual):
+    agentTime = 0.0
     reward = 0.0
     # Transform the tree expression to functional Python code
     routine = gp.compile(individual, pset)
     MR.gpFun = routine
     MR.setAgentFun(gpLoop)
-    print "Individual: ",
-    print individual
+    print "New Chromosome"
+    # print "Individual: ",
+    # print individual
 
     # Run the generated routine
-    # for i in range(1,16):
-    for i in [1]:
+    for i in range(1,16):
+    # for i in [1]:
         loadXMLFile('./Mazes/Maze'+str(i)+'.xml')
         MR.runAgent()
-        reward = reward + MR.getReward()
-    print "\tReward: ",
-    print reward
+        currentReward = MR.getReward()
+        currentTime = MR.agentTime
+        print i,
+        print ",",
+        print currentReward,
+        print ",",
+        print currentTime
+        agentTime = agentTime + currentTime
+        reward = reward + currentReward
+    print "Total,",
+    print reward,
+    print ",",
+    print agentTime
     return (reward,)
 
 toolbox.register("evaluate", evalMalmoAgent)
@@ -137,7 +155,7 @@ toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
 toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
 
-def loadXMLFile(mission_file = './Mazes/Maze.xml'):
+def loadXMLFile(mission_file = './Mazes/Maze1.xml'):
     with open(mission_file, 'r') as f:
         print "Loading mission from %s" % mission_file
         xml = f.read()

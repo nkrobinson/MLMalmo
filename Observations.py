@@ -1,5 +1,4 @@
 import MalmoPython
-import re
 import json
 import time
 
@@ -16,13 +15,14 @@ class Observations(object):
                 return False
             world_state = self.mr.checkWorldState()
         # print "Observations: World state observations: " + str(world_state.observations[0].text)
-        # print "Length: " + str(len(world_state.observations))
 
         try:
             self.observations = json.loads(world_state.observations[0].text)
             self.direction = self.observations['Yaw']
             self.grid = self.observations['AgentGrid']
             self.gridFloat = map(self.mr.b.blockId, self.grid)
+            self.x = self.observations['XPos']
+            self.z = self.observations['ZPos']
         except KeyError:
             return False
         return True

@@ -12,13 +12,13 @@
     <ServerHandlers>
         <FlatWorldGenerator generatorString="3;7,220*1,5*3,2;3;,biome_1" />
         <DrawingDecorator>
-            <DrawCuboid type="stone" x1="-1" y1="225" z1="-1" x2="-1" y2="229" z2="61"/>
-            <DrawCuboid type="stone" x1="-1" y1="225" z1="-1" x2="61" y2="229" z2="-1"/>
-            <DrawCuboid type="stone" x1="61" y1="225" z1="-1" x2="61" y2="229" z2="61"/>
-            <DrawCuboid type="stone" x1="-1" y1="225" z1="61" x2="61" y2="229" z2="61"/>
+            <DrawCuboid type="stone" x1="-1" y1="225" z1="-1" x2="-1" y2="229" z2="30"/>
+            <DrawCuboid type="stone" x1="-1" y1="225" z1="-1" x2="30" y2="229" z2="-1"/>
+            <DrawCuboid type="stone" x1="30" y1="225" z1="-1" x2="30" y2="229" z2="30"/>
+            <DrawCuboid type="stone" x1="-1" y1="225" z1="30" x2="30" y2="229" z2="30"/>
         </DrawingDecorator>
         <MazeDecorator>
-            <SizeAndPosition length="60" width="60" yOrigin="225" zOrigin="0" height="180"/>
+            <SizeAndPosition length="30" width="30" yOrigin="225" zOrigin="0" height="180"/>
             <GapProbability variance="0.5">1</GapProbability>
             <Seed>66666668</Seed>
             <MaterialSeed>53232352</MaterialSeed>
@@ -33,7 +33,7 @@
             <AddQuitProducer description="finished maze"/>
             <AddNavigationObservations/>
         </MazeDecorator>
-        <ServerQuitFromTimeUp timeLimitMs="60000"/>
+        <ServerQuitFromTimeUp timeLimitMs="30000"/>
         <ServerQuitWhenAnyAgentFinishes />
     </ServerHandlers>
 </ServerSection>
@@ -48,9 +48,7 @@
         <ChatCommands/>
         <ObservationFromGrid>
             <Grid name="AgentGrid">
-                <!-- <min x="-1" y="0" z="-1"/>
-                <max x="1" y="0" z="1"/> -->
-                <min x="-1" y="-1" z="-1"/>
+                <min x="-1" y="1" z="-1"/>
                 <max x="1" y="1" z="1"/>
             </Grid>
         </ObservationFromGrid>

@@ -21,7 +21,7 @@ def agentFun():
     time.sleep(0.1)
     observations = []
     if not MR.o.update():
-        return 0
+        return -1.0
 
     observations.append(MR.o.getDirection())
     for i in range(len(MR.o.gridFloat)):
@@ -31,23 +31,24 @@ def agentFun():
     # print "Observations: ",
     # print observations
 
-    direction = NN.run(np.array(observations))[0]
+    direction = NN.run(observations)[0]
     direction = (direction * 4)
 
-    # print "Direction: ",
-    # print direction
+    print "Direction:",
+    print direction
 
-    if direction < 1:
+    if direction <= 1:
         MR.c.moveForward()
-    elif direction < 2:
+    elif direction <= 2:
         MR.c.moveBackward()
-    elif direction < 3:
+    elif direction <= 3:
         MR.c.turnLeft()
-    elif direction < 4:
+    elif direction <= 4:
         MR.c.turnRight()
     return direction
 
 def evalMalmoAgent(weights):
+    agentTime = 0.0
     reward = 0.0
     NN.setWeights(weights)
     # print "Weights: ",
@@ -58,12 +59,21 @@ def evalMalmoAgent(weights):
     for i in [1]:
         loadXMLFile('./Mazes/Maze'+str(i)+'.xml')
         MR.runAgent()
-        reward = reward + MR.getReward()
+        currentReward = MR.getReward()
+        currentTime = MR.agentTime
+        print "Reward: ",
+        print currentReward,
+        print "  Time: ",
+        print currentTime
+        agentTime = agentTime + currentTime
+        reward = reward + currentReward
 
     print "\tReward: ",
-    print reward
+    print reward,
+    print "  Time: ",
+    print agentTime
     # return (reward,)
-    return reward
+    return [reward,agentTime]
 
 def loadXMLFile(mission_file = './Mazes/Maze.xml'):
     with open(mission_file, 'r') as f:

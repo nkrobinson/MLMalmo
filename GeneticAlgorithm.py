@@ -4,13 +4,14 @@
 import numpy as np
 import random
 import sys
+import time
 
 class GeneticAlgorithm:
     # Config Options
     def __init__(self,
                 genotype,
                 function,
-                generations=30,
+                generations=25,
                 population_size=50,
                 mutate_chance=0.25,
                 tournamentSize=6,
@@ -30,16 +31,21 @@ class GeneticAlgorithm:
         return initGen
 
     def Fitness(self, chromosome):
-        return self.function(chromosome)
+        fitnessVal = self.function(chromosome)
+        self.curTime = fitnessVal[1]
+        return fitnessVal[0]
 
     def PopFitness(self, pop):
         fitnesspop = []
         popNum = 0
+        self.bestTime = np.inf
         for chromosome in pop:
             popNum += 1
             print "Pop: ",
             print popNum
             fitnesspop.append(self.Fitness(chromosome))
+            if self.curTime < self.bestTime:
+                self.bestTime = self.curTime
         return fitnesspop
 
     def Mutate(self, chromosome):
@@ -83,22 +89,26 @@ class GeneticAlgorithm:
         return newpop
 
     def NewGeneration(self, pop):
-        GAValuesString = ""
         #fbest = np.inf
         genNum = 0
+        f = open('GAValues.csv', 'w')
+        f.write("New Run\n")
+        f.write("Generation,Best Reward,Best Time\n")
+        f.close()
         for gen in range(self.generations):
             print "Generation: ",
             print genNum
             pop = self.Evolve(pop)
-            GAValuesString = GAValuesString + "Generation: " + str(genNum) + "  Best: " + str(self.popBestVal) + "\n"
+            f = open('GAValues.csv', 'a')
+            f.write(str(genNum) + "," + str(self.popBestVal) + "," + str(self.bestTime) + "\n")
+            f.close()
             genNum += 1
         fvalues = self.PopFitness(pop)
         idx = np.argsort(fvalues, axis=0)[::-1]
         self.popBest = pop[idx[0]]
         self.popBestVal = fvalues[idx[0]]
-        GAValuesString = GAValuesString + "Generation: " + str(genNum) + "  Best: " + str(self.popBestVal) + "\n"
-        f = open('GAValues', 'w')
-        f.write(GAValuesString)
+        f = open('GAValues.csv', 'a')
+        f.write(str(genNum) + "," + str(self.popBestVal) + "," + str(self.bestTime) + "\n")
         f.close()
         return self.popBest
 

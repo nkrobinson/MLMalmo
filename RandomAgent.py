@@ -65,14 +65,14 @@ def agentFun():
         observations = []
         if not mr.o.update():
             return 0
-        if(leftBlock() == "stone"):
-            if(frontBlock() != "stone"):
-                mr.c.moveForward()
-            else:
-                mr.c.turnRight()
-        else:
-            mr.c.turnLeft()
+
+        if(frontBlock() == "air"):
             mr.c.moveForward()
+        else:
+            if random.random() >= 0.5:
+                mr.c.turnRight()
+            else:
+                mr.c.turnLeft()
         time.sleep(0.1)
         world_state = mr.getWorldState()
 
