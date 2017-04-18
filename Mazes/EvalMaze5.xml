@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+<About>
+    <Summary>Evaluation Maze 5</Summary>
+</About>
+
+<ServerSection>
+    <ServerInitialConditions>
+        <AllowSpawning>false</AllowSpawning>
+    </ServerInitialConditions>
+    <ServerHandlers>
+        <FlatWorldGenerator generatorString="3;7,220*1,5*3,1;3;,biome_1" />
+        <DrawingDecorator>
+            <DrawCuboid type="stone" x1="-1" y1="225" z1="-1" x2="-1" y2="229" z2="30"/>
+            <DrawCuboid type="stone" x1="-1" y1="225" z1="-1" x2="30" y2="229" z2="-1"/>
+            <DrawCuboid type="stone" x1="30" y1="225" z1="-1" x2="30" y2="229" z2="30"/>
+            <DrawCuboid type="stone" x1="-1" y1="225" z1="30" x2="30" y2="229" z2="30"/>
+        </DrawingDecorator>
+        <MazeDecorator>
+            <SizeAndPosition length="30" width="30" yOrigin="225" zOrigin="0" height="180"/>
+            <GapProbability variance="0.4">0.7</GapProbability>
+            <Seed>1122334455</Seed>
+            <MaterialSeed>1122334455</MaterialSeed>
+            <AllowDiagonalMovement>false</AllowDiagonalMovement>
+            <StartBlock fixedToEdge="true" type="emerald_block" height="1"/>
+            <EndBlock fixedToEdge="true" type="redstone_block" height="3"/>
+            <PathBlock type="stone" height="1"/>
+            <FloorBlock type="stone"/>
+            <SubgoalBlock type="stone"/>
+            <OptimalPathBlock type="stone"/>
+            <GapBlock type="stone" height="3"/>
+            <AddQuitProducer description="finished maze"/>
+            <AddNavigationObservations/>
+        </MazeDecorator>
+        <ServerQuitFromTimeUp timeLimitMs="150000"/>
+        <ServerQuitWhenAnyAgentFinishes />
+    </ServerHandlers>
+</ServerSection>
+
+<AgentSection mode="Survival">
+    <Name>Maze Runner</Name>
+    <AgentStart>
+        <Placement x="-204" y="81" z="217" yaw="0" pitch="0"/>
+    </AgentStart>
+     <AgentHandlers>
+        <DiscreteMovementCommands/>
+        <ChatCommands/>
+        <ObservationFromGrid>
+            <Grid name="AgentGrid">
+                <min x="-1" y="1" z="-1"/>
+                <max x="1" y="1" z="1"/>
+            </Grid>
+        </ObservationFromGrid>
+        <ObservationFromFullStats/>
+        <RewardForTouchingBlockType>
+            <Block reward="10000.0" type="redstone_block" behaviour="onceOnly"/>
+        </RewardForTouchingBlockType>
+        <RewardForSendingCommand reward="-4.0"/>
+        <AgentQuitFromTouchingBlockType>
+            <Block type="redstone_block" description="found_goal" />
+        </AgentQuitFromTouchingBlockType>
+    </AgentHandlers>
+</AgentSection>
+</Mission>

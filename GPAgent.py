@@ -24,7 +24,7 @@ GENERATIONS = 30
 POPULATION = 50
 TOURNAMENT_SIZE = 6
 CROSSOVER_PROBABILITY = 0.75
-MUTATION_PROBABILITY = 0.2
+MUTATION_PROBABILITY = 0.25
 
 def ifThenElse(in1, out1, out2):
     if(in1):
@@ -159,6 +159,27 @@ def loadXMLFile(mission_file = './Mazes/Maze1.xml'):
         xml = f.read()
         MR.setXML(xml)
 
+def runEvalMazes(individual):
+    print "\nEvaluation Mazes"
+    print "Maze,Reward,Time"
+    agentFun = gp.compile(individual, pset)
+    MR.gpFun = agentFun
+    MR.setAgentFun(gpLoop)
+
+    # Run the generated routine
+    for i in range(1,6):
+        loadXMLFile('./Mazes/EvalMaze'+str(i)+'.xml')
+        MR.runAgent(True)
+        currentReward = MR.getReward()
+        currentTime = MR.agentTime
+        print i,
+        print ",",
+        print currentReward,
+        print ",",
+        print currentTime
+    return
+
+
 def main():
     pop = toolbox.population(n=POPULATION)
     hof = tools.HallOfFame(1)
@@ -176,6 +197,8 @@ def main():
     f = open('GAMalmoBest.txt', 'w')
     f.write(str(hof[0]))
     f.close()
+
+    runEvalMazes(hof[0])
 
     return pop, hof, stats
 

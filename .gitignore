@@ -96,3 +96,5 @@ GAValues.*
 NNMalmoBest.*
 GAMalmoBest.*
 GPReturn.*
+LeftAgentData.*
+RandomAgentData.*

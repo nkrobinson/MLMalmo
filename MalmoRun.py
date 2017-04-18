@@ -47,7 +47,7 @@ class MalmoRun(object):
             self.reward += reward.getValue()
         return world_state
 
-    def wrapperFun(self):
+    def wrapperFun(self, eval):
         world_state = self.agent_host.getWorldState()
         location = [-1,-1]
         count = 0
@@ -58,19 +58,21 @@ class MalmoRun(object):
             if self.lastVal == -1.0:
                 world_state = self.getWorldState()
                 continue
-            if location == [self.o.x, self.o.z]:
-                count += 1
-                if count > 10:
-                    return False
-            else:
-                location = [self.o.x, self.o.z]
+            if eval == False:
+                if location == [self.o.x, self.o.z]:
+                    count += 1
+                    if count > 10:
+                        return False
+                else:
+                    count = 0
+                    location = [self.o.x, self.o.z]
             world_state = self.getWorldState()
         return True
 
     def getReward(self):
         return self.reward
 
-    def runAgent(self):
+    def runAgent(self, eval=False):
         #Check for agent and server information
         if self.mission_xml is None:
             print "Mission XML Missing"
@@ -121,7 +123,7 @@ class MalmoRun(object):
         self.agent_host.sendCommand( "chat /time set 0" )
         self.agent_host.sendCommand( "chat /weather clear 3000" )
         startTime = time.time()
-        if self.wrapperFun():
+        if self.wrapperFun(eval):
             endTime = time.time()
             self.agentTime = endTime - startTime
         else:

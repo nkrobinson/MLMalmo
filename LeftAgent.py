@@ -20,23 +20,22 @@ def main():
     agentTime = 0.0
     reward = 0.0
     mr.setAgentFun(agentFun)
-    for i in range(1,16):
-    # for i in [1]:
-        loadXMLFile('./Mazes/Maze'+str(i)+'.xml')
-        mr.runAgent()
-        currentReward = MR.getReward()
-        currentTime = MR.agentTime
-        print "Reward: ",
-        print currentReward,
-        print "  Time: ",
-        print currentTime
+    for i in range(1,6):
+        loadXMLFile('./Mazes/EvalMaze'+str(i)+'.xml')
+        mr.runAgent(True)
+        currentReward = mr.getReward()
+        currentTime = mr.agentTime
+        printString = str(i) + "," + str(currentReward) + "," + str(currentTime) + "\n"
+        print printString
         agentTime = agentTime + currentTime
         reward = reward + currentReward
+        with open("LeftAgentData.txt", 'a') as f:
+            f.write(printString)
 
-    print "\tReward: ",
-    print reward,
-    print "  Time: ",
-    print agentTime
+    printString = "Total" + "," + str(reward) + "," + str(agentTime) + "\n"
+    print printString
+    with open("LeftAgentData.txt", 'a') as f:
+        f.write(printString)
     return reward
 
 def frontBlock():
@@ -76,4 +75,12 @@ def agentFun():
         time.sleep(0.1)
         world_state = mr.getWorldState()
 
-main()
+def Evaluate():
+    with open("LeftAgentData.txt", 'w') as f:
+        f.write("Left Agent Data\n")
+        f.write("Maze,Reward,Time\n")
+    main()
+    main()
+    main()
+
+Evaluate()
