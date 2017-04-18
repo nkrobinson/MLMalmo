@@ -165,18 +165,19 @@ def runEvalMazes(individual):
     agentFun = gp.compile(individual, pset)
     MR.gpFun = agentFun
     MR.setAgentFun(gpLoop)
+    with open("GPAgentData.txt", 'w') as f:
+        f.write("GP Agent Data\n")
+        f.write("Maze,Reward,Time\n")
 
-    # Run the generated routine
     for i in range(1,6):
         loadXMLFile('./Mazes/EvalMaze'+str(i)+'.xml')
         MR.runAgent(True)
         currentReward = MR.getReward()
         currentTime = MR.agentTime
-        print i,
-        print ",",
-        print currentReward,
-        print ",",
-        print currentTime
+        printString = str(i) + "," + str(currentReward) + "," + str(currentTime) + "\n"
+        print printString
+        with open("GPAgentData.txt", 'a') as f:
+            f.write(printString)
     return
 
 
