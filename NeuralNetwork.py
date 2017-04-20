@@ -6,10 +6,10 @@ import numpy as np
 class NeuralNetwork(object):
     def __init__(self):
         # self.inputLayerSize = 29
-        self.inputLayerSize = 12
-        self.outputLayerSize = 1
-        self.hiddenLayerSize = 8
-        # self.hiddenLayerSize = 20
+        self.inputLayerSize = 21
+        self.outputLayerSize = 4
+        # self.hiddenLayerSize = 8
+        self.hiddenLayerSize = 20
 
         self.W1 = np.random.randn(self.inputLayerSize,self.hiddenLayerSize)
         self.W2 = np.random.randn(self.hiddenLayerSize,self.hiddenLayerSize)
@@ -22,12 +22,25 @@ class NeuralNetwork(object):
             raise ValueError('Incorrect input array size')
         x.append(1.0)
         z = np.dot(x, self.W1)
-        a = self.sigmoid(z)
+        a = self.tanH(z)
         z2 = np.dot(a, self.W2)
-        a2 = self.sigmoid(z2)
+        a2 = self.tanH(z2)
         z3 = np.dot(a2, self.W3)
-        y = self.sigmoid(z3)
+        y = self.binStep(z3)
+        # print "Neural Network Layer Values"
+        # print a
+        # print a2
+        # print y
         return y
+
+    def binStep(self, z):
+        returnArray = []
+        for x in z:
+            if x < 0:
+                returnArray.append(0)
+            else:
+                returnArray.append(1)
+        return np.array(returnArray)
 
     def sigmoid(self, z):
         return 1/(1+np.exp(-z))

@@ -56,9 +56,13 @@ class MalmoRun(object):
         self.commandCount = 0
         while world_state.is_mission_running:
             self.lastVal = self.agentFun()
-            if self.lastVal == -1.0:
-                world_state = self.getWorldState()
-                continue
+            try:
+                if self.lastVal == -1.0:
+                    world_state = self.getWorldState()
+                    continue
+            except:
+                pass
+            # if len(self.lastVal) == 1 and self.lastVal == -1.0:
             if eval == False:
                 if location == [self.o.x, self.o.z]:
                     count += 1
@@ -125,7 +129,7 @@ class MalmoRun(object):
         print "Mission running "
 
         self.agent_host.sendCommand( "chat /time set 0" )
-        self.agent_host.sendCommand( "chat /weather clear 3000" )
+        self.agent_host.sendCommand( "chat /weather clear 30000" )
         startTime = time.time()
         if self.wrapperFun(eval):
             endTime = time.time()

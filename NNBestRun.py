@@ -28,30 +28,38 @@ def agentFun():
     observations = []
     if not MR.o.update():
         return -1.0
+    try:
+        if MR.lastVal == 0.0:
+            MR.lastVal = [0.0,0.0,0.0,0.0]
+    except:
+        pass
 
     observations.append(MR.o.getDirection())
-    for i in range(len(MR.o.gridFloat)):
-        observations.append(MR.o.gridFloat[i])
-    observations.append(MR.lastVal)
+    for i in MR.o.gridFloat:
+        observations.append(i)
+    for i in MR.lastVal:
+        observations.append(i)
 
     # print "Observations: ",
     # print observations
 
-    direction = NN.run(observations)[0]
-    direction = (direction * 4)
+    direction = NN.run(observations)
 
-    print "Direction:",
-    print direction
+    # print "Direction:",
+    # print direction
 
-    if direction <= 1:
+    if direction[0] == 1:
         MR.c.moveForward()
-    elif direction <= 2:
+        MR.commandCount += 1
+    if direction[1] == 1:
         MR.c.moveBackward()
-    elif direction <= 3:
+        MR.commandCount += 1
+    if direction[2] == 1:
         MR.c.turnLeft()
-    elif direction <= 4:
+        MR.commandCount += 1
+    if direction[3] == 1:
         MR.c.turnRight()
-    mr.commandCount += 1
+        MR.commandCount += 1
     return direction
 
 def setNNBestFun():

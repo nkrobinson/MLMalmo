@@ -91,25 +91,24 @@ class GeneticAlgorithm:
     def NewGeneration(self, pop):
         #fbest = np.inf
         genNum = 0
-        f = open('GAValues.csv', 'w')
-        f.write("New Run\n")
-        f.write("Generation,Best Reward,Best Time\n")
-        f.close()
+        with open("GAValues.csv", 'w') as f:
+            f.write("New Run\n")
+            f.write("Generation,Best Reward,Best Time\n")
         for gen in range(self.generations):
             print "Generation: ",
             print genNum
             pop = self.Evolve(pop)
-            f = open('GAValues.csv', 'a')
-            f.write(str(genNum) + "," + str(self.popBestVal) + "," + str(self.bestTime) + "\n")
-            f.close()
+            with open("GAValues.csv", 'a') as f:
+                f.write(str(genNum) + "," + str(self.popBestVal) + "," + str(self.bestTime) + "\n")
+            with open("NNMalmoBest.txt", 'w') as f:
+                f.write(str(self.popBest))
             genNum += 1
         fvalues = self.PopFitness(pop)
         idx = np.argsort(fvalues, axis=0)[::-1]
         self.popBest = pop[idx[0]]
         self.popBestVal = fvalues[idx[0]]
-        f = open('GAValues.csv', 'a')
-        f.write(str(genNum) + "," + str(self.popBestVal) + "," + str(self.bestTime) + "\n")
-        f.close()
+        with open("GAValues.csv", 'a') as f:
+            f.write(str(genNum) + "," + str(self.popBestVal) + "," + str(self.bestTime) + "\n")
         return self.popBest
 
     def Run(self):

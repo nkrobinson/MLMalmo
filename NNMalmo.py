@@ -22,30 +22,41 @@ def agentFun():
     observations = []
     if not MR.o.update():
         return -1.0
+    try:
+        if len(MR.lastVal) > 1:
+            pass
+        else:
+            raise Exception
+    except:
+        MR.lastVal = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+        pass
 
     observations.append(MR.o.getDirection())
-    for i in range(len(MR.o.gridFloat)):
-        observations.append(MR.o.gridFloat[i])
-    observations.append(MR.lastVal)
+    for i in MR.o.gridFloat:
+        observations.append(i)
+    for i in MR.lastVal:
+        observations.append(i)
 
     # print "Observations: ",
     # print observations
 
-    direction = NN.run(observations)[0]
-    direction = (direction * 4)
+    direction = NN.run(observations)
 
-    print "Direction:",
-    print direction
-
-    if direction <= 1:
+    # print "Direction:",
+    # print direction
+    if direction[0] == 1:
         MR.c.moveForward()
-    elif direction <= 2:
+        MR.commandCount += 1
+    if direction[1] == 1:
         MR.c.moveBackward()
-    elif direction <= 3:
+        MR.commandCount += 1
+    if direction[2] == 1:
         MR.c.turnLeft()
-    elif direction <= 4:
+        MR.commandCount += 1
+    if direction[3] == 1:
         MR.c.turnRight()
-    return direction
+        MR.commandCount += 1
+    return observations[:10]
 
 def evalMalmoAgent(weights):
     agentTime = 0.0
@@ -55,24 +66,22 @@ def evalMalmoAgent(weights):
     # print np.array(weights)
     MR.setAgentFun(agentFun)
 
-    # for i in range(1,16):
-    for i in [1]:
+    for i in range(1,16):
         loadXMLFile('./Mazes/Maze'+str(i)+'.xml')
         MR.runAgent()
         currentReward = MR.getReward()
         currentTime = MR.agentTime
-        print "Reward: ",
-        print currentReward,
-        print "  Time: ",
-        print currentTime
+        # print i,
+        # print ",",
+        # print currentReward,
+        # print ",",
+        # print currentTime
         agentTime = agentTime + currentTime
         reward = reward + currentReward
-
     print "\tReward: ",
     print reward,
     print "  Time: ",
     print agentTime
-    # return (reward,)
     return [reward,agentTime]
 
 def loadXMLFile(mission_file = './Mazes/Maze.xml'):
@@ -84,7 +93,6 @@ def loadXMLFile(mission_file = './Mazes/Maze.xml'):
 if __name__ == "__main__":
     GA = GeneticAlgorithm(Genotype(NN.weightNum), evalMalmoAgent)
     weights = GA.Run()
-    f = open('NNMalmoBest.txt', 'w')
-    print "Final Weights: " + str(weights)
-    f.write(str(weights))
-    f.close()
+    with open("NNMalmoBest.txt", 'w') as f:
+        print "Final Weights: " + str(weights)
+        f.write(str(weights))

@@ -122,6 +122,7 @@ def gpLoop():
 def evalMalmoAgent(individual):
     agentTime = 0.0
     reward = 0.0
+    commands = 0
     # Transform the tree expression to functional Python code
     routine = gp.compile(individual, pset)
     MR.gpFun = routine
@@ -143,9 +144,11 @@ def evalMalmoAgent(individual):
         # print currentTime
         agentTime = agentTime + currentTime
         reward = reward + currentReward
-    print reward,
-    print ",",
-    print agentTime
+        reward = commands + mr.commandCount
+    printString = str(i) + "," + str(reward) + "," + str(agentTime) + "," + str(commands) + "\n"
+    print printString
+    with open("FullGPAgentData.txt", 'a') as f:
+        f.write(printString)
     return (reward,)
 
 toolbox.register("evaluate", evalMalmoAgent)
@@ -183,6 +186,9 @@ def runEvalMazes(individual):
 
 
 def main():
+    with open("FullGPAgentData.txt", 'w') as f:
+        f.write("GP Agent Data\n")
+        f.write("Maze,Reward,Time,Command Count\n")
     pop = toolbox.population(n=POPULATION)
     hof = tools.HallOfFame(1)
     stats = tools.Statistics(lambda ind: ind.fitness.values)
@@ -196,9 +202,8 @@ def main():
 
     # print "Hall Of Fame: ",
     # print str(hof[0])
-    f = open('GPMalmoBest.txt', 'w')
-    f.write(str(hof[0]))
-    f.close()
+    with open("GPMalmoBest.txt", 'w') as f:
+        f.write(str(hof[0]))
 
     runEvalMazes(hof[0])
 
