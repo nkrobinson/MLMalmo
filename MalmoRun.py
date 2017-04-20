@@ -53,6 +53,7 @@ class MalmoRun(object):
         count = 0
         self.reward = 0.0
         self.lastVal = 0.0
+        self.commandCount = 0
         while world_state.is_mission_running:
             self.lastVal = self.agentFun()
             if self.lastVal == -1.0:
@@ -61,7 +62,7 @@ class MalmoRun(object):
             if eval == False:
                 if location == [self.o.x, self.o.z]:
                     count += 1
-                    if count > 10:
+                    if count > 20:
                         return False
                 else:
                     count = 0
@@ -96,7 +97,7 @@ class MalmoRun(object):
         my_mission_record = MalmoPython.MissionRecordSpec("chat_reward.tgz")
 
         # Attempt to start a mission:
-        max_retries = 3
+        max_retries = 30
         for retry in range(max_retries):
             try:
                 self.agent_host.startMission( my_mission, my_mission_record )
@@ -104,7 +105,10 @@ class MalmoRun(object):
             except RuntimeError as e:
                 if retry == max_retries - 1:
                     print "Error starting mission:",e
-                    exit(1)
+                    self.agentTime = 10000.0
+                    self.reward = -10000
+                    return
+                    # exit(1)
                 else:
                     time.sleep(2)
 
@@ -127,9 +131,10 @@ class MalmoRun(object):
             endTime = time.time()
             self.agentTime = endTime - startTime
         else:
+            endTime = time.time()
             self.agent_host.sendCommand( "chat /tp -50 200 -50" )
+            self.reward += (30 - (endTime - startTime)) * -40
             self.agentTime = 30.0
-            self.reward += -1000
 
         # print
         # print "Mission ended"

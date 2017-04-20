@@ -115,6 +115,7 @@ def gpLoop():
         MR.c.turnLeft()
     elif direction < 4:
         MR.c.turnRight()
+    mr.commandCount += 1
     return direction
 
 
@@ -161,20 +162,20 @@ def loadXMLFile(mission_file = './Mazes/Maze1.xml'):
 
 def runEvalMazes(individual):
     print "\nEvaluation Mazes"
-    print "Maze,Reward,Time"
+    print "Maze,Reward,Time,Command Count"
     agentFun = gp.compile(individual, pset)
     MR.gpFun = agentFun
     MR.setAgentFun(gpLoop)
     with open("GPAgentData.txt", 'w') as f:
         f.write("GP Agent Data\n")
-        f.write("Maze,Reward,Time\n")
+        f.write("Maze,Reward,Time,Command Count\n")
 
     for i in range(1,6):
         loadXMLFile('./Mazes/EvalMaze'+str(i)+'.xml')
         MR.runAgent(True)
         currentReward = MR.getReward()
         currentTime = MR.agentTime
-        printString = str(i) + "," + str(currentReward) + "," + str(currentTime) + "\n"
+        printString = str(i) + "," + str(currentReward) + "," + str(currentTime) + "," + str(mr.commandCount) + "\n"
         print printString
         with open("GPAgentData.txt", 'a') as f:
             f.write(printString)
@@ -195,7 +196,7 @@ def main():
 
     # print "Hall Of Fame: ",
     # print str(hof[0])
-    f = open('GAMalmoBest.txt', 'w')
+    f = open('GPMalmoBest.txt', 'w')
     f.write(str(hof[0]))
     f.close()
 

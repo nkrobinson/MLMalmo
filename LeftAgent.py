@@ -21,21 +21,21 @@ def main():
     reward = 0.0
     mr.setAgentFun(agentFun)
     for i in range(1,6):
-        loadXMLFile('./Mazes/EvalMaze'+str(i)+'.xml')
+        loadXMLFile('./Mazes/EvalMaze'+str(i)+'NoLimit.xml')
         mr.runAgent(True)
         currentReward = mr.getReward()
         currentTime = mr.agentTime
-        printString = str(i) + "," + str(currentReward) + "," + str(currentTime) + "\n"
+        printString = str(i) + "," + str(currentReward) + "," + str(currentTime) + "," + str(mr.commandCount) + "\n"
         print printString
         agentTime = agentTime + currentTime
         reward = reward + currentReward
         with open("LeftAgentData.txt", 'a') as f:
             f.write(printString)
 
-    printString = "Total" + "," + str(reward) + "," + str(agentTime) + "\n"
-    print printString
-    with open("LeftAgentData.txt", 'a') as f:
-        f.write(printString)
+    # printString = "Total" + "," + str(reward) + "," + str(agentTime) + "\n"
+    # print printString
+    # with open("LeftAgentData.txt", 'a') as f:
+    #     f.write(printString)
     return reward
 
 def frontBlock():
@@ -59,26 +59,25 @@ def leftBlock():
         return mr.o.grid[1]
 
 def agentFun():
-    world_state = mr.agent_host.getWorldState()
-    while world_state.is_mission_running:
-        observations = []
-        if not mr.o.update():
-            return 0
-        if(leftBlock() == "stone"):
-            if(frontBlock() != "stone"):
-                mr.c.moveForward()
-            else:
-                mr.c.turnRight()
-        else:
-            mr.c.turnLeft()
+    time.sleep(0.1)
+    if not mr.o.update():
+        return -1.0
+    if(leftBlock() == "stone"):
+        if(frontBlock() != "stone"):
             mr.c.moveForward()
-        time.sleep(0.1)
-        world_state = mr.getWorldState()
+            mr.commandCount += 1
+        else:
+            mr.c.turnRight()
+            mr.commandCount += 1
+    else:
+        mr.c.turnLeft()
+        mr.c.moveForward()
+        mr.commandCount += 2
 
 def Evaluate():
     with open("LeftAgentData.txt", 'w') as f:
         f.write("Left Agent Data\n")
-        f.write("Maze,Reward,Time\n")
+        f.write("Maze,Reward,Time,Command Count\n")
     main()
     main()
     main()

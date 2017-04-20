@@ -21,21 +21,21 @@ def main():
     reward = 0.0
     mr.setAgentFun(agentFun)
     for i in range(1,6):
-        loadXMLFile('./Mazes/EvalMaze'+str(i)+'.xml')
+        loadXMLFile('./Mazes/EvalMaze'+str(i)+'NoLimit.xml')
         mr.runAgent(True)
         currentReward = mr.getReward()
         currentTime = mr.agentTime
-        printString = str(i) + "," + str(currentReward) + "," + str(currentTime) + "\n"
+        printString = str(i) + "," + str(currentReward) + "," + str(currentTime) + "," + str(mr.commandCount) + "\n"
         print printString
         agentTime = agentTime + currentTime
         reward = reward + currentReward
         with open("RandomAgentData.txt", 'a') as f:
             f.write(printString)
 
-    printString = "Total" + "," + str(reward) + "," + str(agentTime) + "\n"
-    print printString
-    with open("RandomAgentData.txt", 'a') as f:
-        f.write(printString)
+    # printString = "Total" + "," + str(reward) + "," + str(agentTime) + "\n"
+    # print printString
+    # with open("RandomAgentData.txt", 'a') as f:
+    #     f.write(printString)
     return reward
 
 def frontBlock():
@@ -58,26 +58,43 @@ def leftBlock():
     else:
         return mr.o.grid[1]
 
+def backBlock():
+    if (mr.o.direction == 0.0):
+        return mr.o.grid[1]
+    elif (mr.o.direction == 90):
+        return mr.o.grid[5]
+    elif (mr.o.direction == 180.0):
+        return mr.o.grid[7]
+    else:
+        return mr.o.grid[3]
+
+def rightBlock():
+    if (mr.o.direction == 0.0):
+        return mr.o.grid[3]
+    elif (mr.o.direction == 90):
+        return mr.o.grid[1]
+    elif (mr.o.direction == 180.0):
+        return mr.o.grid[5]
+    else:
+        return mr.o.grid[7]
+
 def agentFun():
-    world_state = mr.agent_host.getWorldState()
-    while world_state.is_mission_running:
-        observations = []
-        if not mr.o.update():
-            return 0
-        if(frontBlock() == "air"):
-            mr.c.moveForward()
-        else:
-            if random.random() >= 0.5:
-                mr.c.turnRight()
-            else:
-                mr.c.turnLeft()
-        time.sleep(0.1)
-        world_state = mr.getWorldState()
+    time.sleep(0.1)
+    if not mr.o.update():
+        return -1.0
+    randomNum = random.randint(1,3)
+    if randomNum == 1:
+        mr.c.moveForward()
+    elif randomNum == 2:
+        mr.c.turnLeft()
+    else:
+        mr.c.turnRight()
+    mr.commandCount += 1
 
 def Evaluate():
     with open("RandomAgentData.txt", 'w') as f:
         f.write("Random Agent Data\n")
-        f.write("Maze,Reward,Time\n")
+        f.write("Maze,Reward,Time,Command Count\n")
     main()
     main()
     main()

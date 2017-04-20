@@ -94,10 +94,7 @@ chat_reward.*
 SimpleMaze.*
 GAValues.*
 NNMalmoBest.*
-GPMalmoBest.*
+GAMalmoBest.*
 GPReturn.*
 LeftAgentData.*
 RandomAgentData.*
-HumanAgentData.*
-BestGPAgentData.*
-BestNNAgentData.*
