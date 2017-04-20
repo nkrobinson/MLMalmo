@@ -99,6 +99,7 @@ GPReturn.*
 LeftAgentData.*
 RandomAgentData.*
 HumanAgentData.*
+FullGPAgentData.*
 BestGPAgentData.*
 BestNNAgentData.*
 

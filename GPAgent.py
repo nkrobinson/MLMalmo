@@ -39,8 +39,12 @@ def oneOver(x):
 
 MR = MalmoRun()
 
-pset = gp.PrimitiveSetTyped("MAIN", [float, float, float, float, float, float,
-                                     float, float, float, float, float,], float)
+# pset = gp.PrimitiveSetTyped("MAIN", [float, float, float, float, float, float,
+#                                      float, float, float, float, float,], float)
+pset = gp.PrimitiveSetTyped("MAIN", [float,float,float,float,float,
+                                     float,float,float,float,float,
+                                     float,float,float,float,float,
+                                     float,float,float,float,float], float)
 pset.addPrimitive(ifThenElse, [bool, float, float], float)
 
 pset.addPrimitive(operator.add, [float,float], float)
@@ -88,19 +92,36 @@ def gpLoop():
     observations = []
     if not MR.o.update():
         return -1.0
+    try:
+        if len(MR.lastVal) > 1:
+            pass
+        else:
+            raise Exception
+    except:
+        MR.lastVal = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+        pass
 
-    observations.append(float(MR.o.getDirection()))
-    for i in range(len(MR.o.gridFloat)):
-        observations.append(float(MR.o.gridFloat[i]))
-    observations.append(float(MR.lastVal))
+    observations.append(MR.o.getDirection())
+    for i in MR.o.gridFloat:
+        observations.append(i)
+    for i in MR.lastVal:
+        observations.append(i)
 
     # print "Observations: ",
     # print observations
 
+    # direction = math.floor(MR.gpFun(observations[0],observations[1],observations[2],
+    #                                 observations[3],observations[4],observations[5],
+    #                                 observations[6],observations[7],observations[8],
+    #                                 observations[9],observations[10]))
     direction = math.floor(MR.gpFun(observations[0],observations[1],observations[2],
                                     observations[3],observations[4],observations[5],
                                     observations[6],observations[7],observations[8],
-                                    observations[9],observations[10]))
+                                    observations[9],observations[10],observations[11],
+                                    observations[12],observations[13],observations[14],
+                                    observations[15],observations[16],observations[17],
+                                    observations[18],observations[19]))
+
 
     direction = direction % 4
 
@@ -115,8 +136,8 @@ def gpLoop():
         MR.c.turnLeft()
     elif direction < 4:
         MR.c.turnRight()
-    mr.commandCount += 1
-    return direction
+    MR.commandCount += 1
+    return observations[:10]
 
 
 def evalMalmoAgent(individual):
@@ -144,7 +165,7 @@ def evalMalmoAgent(individual):
         # print currentTime
         agentTime = agentTime + currentTime
         reward = reward + currentReward
-        reward = commands + mr.commandCount
+        reward = commands + MR.commandCount
     printString = str(i) + "," + str(reward) + "," + str(agentTime) + "," + str(commands) + "\n"
     print printString
     with open("FullGPAgentData.txt", 'a') as f:
@@ -178,7 +199,7 @@ def runEvalMazes(individual):
         MR.runAgent(True)
         currentReward = MR.getReward()
         currentTime = MR.agentTime
-        printString = str(i) + "," + str(currentReward) + "," + str(currentTime) + "," + str(mr.commandCount) + "\n"
+        printString = str(i) + "," + str(currentReward) + "," + str(currentTime) + "," + str(MR.commandCount) + "\n"
         print printString
         with open("GPAgentData.txt", 'a') as f:
             f.write(printString)
