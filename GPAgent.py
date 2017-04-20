@@ -130,13 +130,16 @@ def gpLoop():
 
     if direction < 1:
         MR.c.moveForward()
+        MR.commandCount += 1
     elif direction < 2:
         MR.c.moveBackward()
+        MR.commandCount += 1
     elif direction < 3:
         MR.c.turnLeft()
+        MR.commandCount += 1
     elif direction < 4:
         MR.c.turnRight()
-    MR.commandCount += 1
+        MR.commandCount += 1
     return observations[:10]
 
 
@@ -165,8 +168,8 @@ def evalMalmoAgent(individual):
         # print currentTime
         agentTime = agentTime + currentTime
         reward = reward + currentReward
-        reward = commands + MR.commandCount
-    printString = str(i) + "," + str(reward) + "," + str(agentTime) + "," + str(commands) + "\n"
+        commands = commands + MR.commandCount
+    printString = str(reward) + "," + str(agentTime) + "," + str(commands) + "\n"
     print printString
     with open("FullGPAgentData.txt", 'a') as f:
         f.write(printString)
@@ -209,7 +212,7 @@ def runEvalMazes(individual):
 def main():
     with open("FullGPAgentData.txt", 'w') as f:
         f.write("GP Agent Data\n")
-        f.write("Maze,Reward,Time,Command Count\n")
+        f.write("Reward,Time,Command Count\n")
     pop = toolbox.population(n=POPULATION)
     hof = tools.HallOfFame(1)
     stats = tools.Statistics(lambda ind: ind.fitness.values)
