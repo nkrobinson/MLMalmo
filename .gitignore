@@ -101,3 +101,6 @@ RandomAgentData.*
 HumanAgentData.*
 BestGPAgentData.*
 BestNNAgentData.*
+
+# Temporary Files
+*~
