@@ -20,7 +20,7 @@ import numpy as np
 import operator
 import math
 
-GENERATIONS = 30
+GENERATIONS = 15
 POPULATION = 50
 TOURNAMENT_SIZE = 6
 CROSSOVER_PROBABILITY = 0.75
@@ -110,10 +110,6 @@ def gpLoop():
     # print "Observations: ",
     # print observations
 
-    # direction = math.floor(MR.gpFun(observations[0],observations[1],observations[2],
-    #                                 observations[3],observations[4],observations[5],
-    #                                 observations[6],observations[7],observations[8],
-    #                                 observations[9],observations[10]))
     direction = math.floor(MR.gpFun(observations[0],observations[1],observations[2],
                                     observations[3],observations[4],observations[5],
                                     observations[6],observations[7],observations[8],
@@ -156,7 +152,6 @@ def evalMalmoAgent(individual):
 
     # Run the generated routine
     for i in range(1,16):
-    # for i in [1]:
         loadXMLFile('./Mazes/Maze'+str(i)+'.xml')
         MR.runAgent()
         currentReward = MR.getReward()

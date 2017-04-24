@@ -56,6 +56,8 @@ def agentFun():
     if direction[3] == 1:
         MR.c.turnRight()
         MR.commandCount += 1
+    if direction[0] == 0 and direction[1] == 0 and direction[2] == 0 and direction[3] == 0:
+        MR.reward -= 4
     return observations[:10]
 
 def evalMalmoAgent(weights):

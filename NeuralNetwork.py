@@ -5,17 +5,14 @@ import numpy as np
 
 class NeuralNetwork(object):
     def __init__(self):
-        # self.inputLayerSize = 29
         self.inputLayerSize = 21
         self.outputLayerSize = 4
-        # self.hiddenLayerSize = 8
-        self.hiddenLayerSize = 20
+        self.hiddenLayerSize = 21
 
         self.W1 = np.random.randn(self.inputLayerSize,self.hiddenLayerSize)
-        self.W2 = np.random.randn(self.hiddenLayerSize,self.hiddenLayerSize)
-        self.W3 = np.random.randn(self.hiddenLayerSize,self.outputLayerSize)
+        self.W2 = np.random.randn(self.hiddenLayerSize,self.outputLayerSize)
 
-        self.weightNum = self.W1.size + self.W2.size + self.W2.size
+        self.weightNum = self.W1.size + self.W2.size
 
     def run(self, x):
         if len(x) != self.inputLayerSize -1:
@@ -24,13 +21,7 @@ class NeuralNetwork(object):
         z = np.dot(x, self.W1)
         a = self.tanH(z)
         z2 = np.dot(a, self.W2)
-        a2 = self.tanH(z2)
-        z3 = np.dot(a2, self.W3)
-        y = self.binStep(z3)
-        # print "Neural Network Layer Values"
-        # print a
-        # print a2
-        # print y
+        y = self.binStep(z2)
         return y
 
     def binStep(self, z):
@@ -74,15 +65,3 @@ class NeuralNetwork(object):
                 self.W2 = np.append([self.W2], [arrayList[i]], axis = 0)
             else:
                 self.W2 = np.append(self.W2, [arrayList[i]], axis = 0)
-
-        d1 = len(self.W3)
-        d2 = len(self.W3[0])
-        arrayList = []
-        for i in range(d1):
-            arrayList.append(np.array(weights[index:index+d2]))
-        self.W3 = np.array(arrayList[0])
-        for i in range(1,len(arrayList)):
-            if i == 1:
-                self.W3 = np.append([self.W3], [arrayList[i]], axis = 0)
-            else:
-                self.W3 = np.append(self.W3, [arrayList[i]], axis = 0)

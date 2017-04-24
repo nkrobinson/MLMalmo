@@ -20,8 +20,8 @@ def main():
     agentTime = 0.0
     reward = 0.0
     mr.setAgentFun(agentFun)
-    for i in range(1,6):
-        loadXMLFile('./Mazes/EvalMaze'+str(i)+'NoLimit.xml')
+    for i in range(1,16):
+        loadXMLFile('./Mazes/EvalMaze'+str(i)+'.xml')
         mr.runAgent(True)
         currentReward = mr.getReward()
         currentTime = mr.agentTime
@@ -39,9 +39,9 @@ def agentFun():
         world_state = mr.agent_host.getWorldState()
 
 def Evaluate():
-    # with open("HumanAgentData.txt", 'w') as f:
-    #     f.write("Random Agent Data\n")
-    #     f.write("Maze,Reward,Time\n")
+    with open("HumanAgentData.txt", 'w') as f:
+        f.write("Random Agent Data\n")
+        f.write("Maze,Reward,Time\n")
     main()
 
 Evaluate()
